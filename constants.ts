@@ -1,0 +1,62 @@
+import { CoinMetadata } from './types';
+
+// Initial Holdings (Quantidade de moedas que o usuário tem, não o valor em R$)
+export const INITIAL_HOLDINGS: Record<string, number> = {
+  'bitcoin': 0.05, 
+  'ethereum': 1.5,
+  'tether': 1250.00, // Adicionado saldo USDT
+  'solana': 20,
+  'dogecoin': 0,
+  'cardano': 500
+};
+
+export const SUPPORTED_COINS: CoinMetadata[] = [
+  {
+    id: 'bitcoin',
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    icon: 'currency_bitcoin'
+  },
+  {
+    id: 'ethereum',
+    symbol: 'ETH',
+    name: 'Ethereum',
+    icon: 'currency_bitcoin' // Using generic icon for demo consistency
+  },
+  {
+    id: 'tether',
+    symbol: 'USDT',
+    name: 'Tether',
+    icon: 'attach_money' // Icone de cifrão para USDT
+  },
+  {
+    id: 'solana',
+    symbol: 'SOL',
+    name: 'Solana',
+    icon: 'S',
+    isIconText: true
+  },
+  {
+    id: 'dogecoin',
+    symbol: 'DOGE',
+    name: 'Dogecoin',
+    icon: 'currency_bitcoin'
+  },
+  {
+    id: 'cardano',
+    symbol: 'ADA',
+    name: 'Cardano',
+    icon: 'A',
+    isIconText: true
+  }
+];
+
+// Redes simuladas para a tela de saque
+export const COIN_NETWORKS: Record<string, string[]> = {
+  'bitcoin': ['Bitcoin (BTC)', 'BNB Smart Chain (BEP20)', 'Lightning Network'],
+  'ethereum': ['Ethereum (ERC20)', 'Arbitrum One', 'Optimism', 'BNB Smart Chain (BEP20)'],
+  'tether': ['Tron (TRC20)', 'Ethereum (ERC20)', 'BNB Smart Chain (BEP20)', 'Solana'],
+  'solana': ['Solana', 'BNB Smart Chain (BEP20)'],
+  'dogecoin': ['Dogecoin', 'BNB Smart Chain (BEP20)'],
+  'cardano': ['Cardano', 'BNB Smart Chain (BEP20)']
+};

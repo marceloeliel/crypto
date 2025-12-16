@@ -1,0 +1,5 @@
+{
+  "name": "Binance Clone",
+  "description": "A high-fidelity crypto exchange simulation featuring authentication, market overview, wallet management, and fiat deposit flows.",
+  "requestFramePermissions": []
+}
