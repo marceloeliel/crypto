@@ -39,5 +39,7 @@ export enum RoutePath {
   DEPOSIT_OPTIONS = "/deposit-options",
   DEPOSIT_FIAT = "/deposit-fiat",
   WITHDRAW = "/withdraw",
-  PROFILE = "/profile"
+  PROFILE = "/profile",
+  FORGOT_PASSWORD = "/forgot-password",
+  RESET_PASSWORD = "/reset-password"
 }

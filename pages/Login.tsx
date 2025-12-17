@@ -146,7 +146,10 @@ export const Login: React.FC = () => {
           )}
         </div>
 
-        <p className="text-primary text-sm font-normal leading-normal pb-3 pt-1 text-left underline cursor-pointer">
+        <p
+          onClick={() => navigate(RoutePath.FORGOT_PASSWORD)}
+          className="text-primary text-sm font-normal leading-normal pb-3 pt-1 text-left underline cursor-pointer"
+        >
           {t.login.forgotPassword}
         </p>
 

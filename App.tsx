@@ -10,6 +10,8 @@ import { DepositOptions } from './pages/DepositOptions';
 import { DepositFiat } from './pages/DepositFiat';
 import { Withdraw } from './pages/Withdraw';
 import { Profile } from './pages/Profile';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 import { RoutePath } from './types';
 
 const App: React.FC = () => {
@@ -26,6 +28,8 @@ const App: React.FC = () => {
               <Route path={RoutePath.DEPOSIT_FIAT} element={<DepositFiat />} />
               <Route path={RoutePath.WITHDRAW} element={<Withdraw />} />
               <Route path={RoutePath.PROFILE} element={<Profile />} />
+              <Route path={RoutePath.FORGOT_PASSWORD} element={<ForgotPassword />} />
+              <Route path={RoutePath.RESET_PASSWORD} element={<ResetPassword />} />
             </Routes>
           </HashRouter>
         </UserProvider>
