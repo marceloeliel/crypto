@@ -36,10 +36,10 @@ export const translations = {
             settings: "Configurações",
             help: "Ajuda e Suporte",
             logout: "Sair",
-            version: "Versão 1.0.4 - Binance Clone"
+            version: "Versão 1.0.4 - Coinbase"
         },
         login: {
-            welcome: "Bem-vindo à Binance",
+            welcome: "Bem-vindo à Coinbase",
             login: "Entrar",
             register: "Registrar",
             fullName: "Nome Completo",
@@ -100,10 +100,10 @@ export const translations = {
             settings: "Settings",
             help: "Help & Support",
             logout: "Log Out",
-            version: "Version 1.0.4 - Binance Clone"
+            version: "Version 1.0.4 - Coinbase"
         },
         login: {
-            welcome: "Welcome to Binance",
+            welcome: "Welcome to Coinbase",
             login: "Log In",
             register: "Register",
             fullName: "Full Name",
@@ -164,10 +164,10 @@ export const translations = {
             settings: "Configuración",
             help: "Ayuda y Soporte",
             logout: "Cerrar Sesión",
-            version: "Versión 1.0.4 - Binance Clone"
+            version: "Versión 1.0.4 - Coinbase"
         },
         login: {
-            welcome: "Bienvenido a Binance",
+            welcome: "Bienvenido a Coinbase",
             login: "Iniciar Sesión",
             register: "Registrarse",
             fullName: "Nombre Completo",

@@ -1,51 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Binance Clone</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#1F5EE4",
-              "background-light": "#f8f8f5",
-              "background-dark": "#121212",
-              "background-card": "#1E1E1E",
-              "surface-dark": "#221f10",
-              "text-primary": "#ffffff",
-              "text-secondary": "#9ca3af",
-              "text-gold": "#cbc190",
-            },
-            fontFamily: {
-              "display": ["Manrope", "sans-serif"]
-            },
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coinbase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#1F5EE4",
+            "background-light": "#f8f8f5",
+            "background-dark": "#121212",
+            "background-card": "#1E1E1E",
+            "surface-dark": "#221f10",
+            "text-primary": "#ffffff",
+            "text-secondary": "#9ca3af",
+            "text-gold": "#cbc190",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
           },
         },
-      }
-    </script>
-    <style>
-      body {
-        background-color: #121212;
-        color: white;
-      }
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      /* Hide scrollbar for clean mobile look */
-      ::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-      }
-    </style>
+      },
+    }
+  </script>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Hide scrollbar for clean mobile look */
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+  </style>
 </head>
-  <body>
-    <div id="root"></div>
+
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

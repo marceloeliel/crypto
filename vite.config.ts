@@ -17,15 +17,15 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         manifest: {
-          name: 'Binance Clone',
-          short_name: 'Binance',
-          description: 'A Binance Clone Crypto Exchange',
-          theme_color: '#1E2026',
+          name: 'Coinbase',
+          short_name: 'Coinbase',
+          description: 'Coinbase Crypto Exchange',
+          theme_color: '#0052FF',
           icons: [
             {
-              src: 'icon.svg',
-              sizes: 'any',
-              type: 'image/svg+xml',
+              src: 'icon.png',
+              sizes: '512x512',
+              type: 'image/png',
               purpose: 'any maskable'
             }
           ]

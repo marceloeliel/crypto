@@ -31,7 +31,7 @@ export const ForgotPassword: React.FC = () => {
                 <header className="flex justify-center pt-12 pb-8">
                     <img
                         src="/binance-logo.png"
-                        alt="Binance Logo"
+                        alt="Coinbase Logo"
                         className="h-12 w-auto"
                     />
                 </header>
@@ -67,7 +67,7 @@ export const ForgotPassword: React.FC = () => {
             <header className="flex justify-center pt-12 pb-8">
                 <img
                     src="/binance-logo.png"
-                    alt="Binance Logo"
+                    alt="Coinbase Logo"
                     className="h-12 w-auto"
                 />
             </header>
