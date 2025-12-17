@@ -2,8 +2,8 @@ export const translations = {
     pt: {
         wallet: {
             title: "Saldo Total Estimado",
-            deposit: "Depositar",
-            withdraw: "Sacar",
+            deposit: "Receber",
+            withdraw: "Transferir",
             history: "Histórico",
             assets: "Meus Ativos",
             searchPlaceholder: "Pesquisar ativo",
@@ -66,8 +66,8 @@ export const translations = {
     en: {
         wallet: {
             title: "Estimated Total Balance",
-            deposit: "Deposit",
-            withdraw: "Withdraw",
+            deposit: "Receive",
+            withdraw: "Transfer",
             history: "History",
             assets: "My Assets",
             searchPlaceholder: "Search asset",
@@ -130,8 +130,8 @@ export const translations = {
     es: {
         wallet: {
             title: "Saldo Total Estimado",
-            deposit: "Depositar",
-            withdraw: "Retirar",
+            deposit: "Recibir",
+            withdraw: "Transferir",
             history: "Historial",
             assets: "Mis Activos",
             searchPlaceholder: "Buscar activo",
