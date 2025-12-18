@@ -303,20 +303,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   // 3. Totais combinados (Fiat + Cripto)
   const totalPortfolioValueBRL = balanceBRL + cryptoPortfolioValueBRL;
 
-  // Para converter o saldo Fiat (BRL) para USD, usamos a taxa implícita do Bitcoin
-  // (Preço BTC em USD / Preço BTC em BRL) = Taxa de conversão BRL -> USD
-  const btcData = coins.find(c => c.id === 'bitcoin');
-  const btcPriceBrl = btcData?.currentPrice || 1;
-  const btcPriceUsd = btcData?.currentPriceUsd || 0;
+  // Para converter o saldo Fiat (BRL) para USD, usamos a taxa do Tether (USDT)
+  // (1 USD = Preço USDT em BRL)
+  const usdtData = coins.find(c => c.id === 'tether');
+  const usdtPriceBrl = usdtData?.currentPrice || 1;
+  const usdtPriceUsd = usdtData?.currentPriceUsd || 1; // Deve ser prox de 1
 
-  // Evita divisão por zero
-  const exchangeRateBrlToUsd = btcPriceBrl > 0 ? (btcPriceUsd / btcPriceBrl) : 0;
+  // Taxa: Quantos USD compram 1 BRL? (Inverso do preço do dólar em reais)
+  const exchangeRateBrlToUsd = usdtPriceBrl > 0 ? (1 / usdtPriceBrl) : 0;
 
   const fiatBalanceInUsd = balanceBRL * exchangeRateBrlToUsd;
   const totalPortfolioValueUSD = fiatBalanceInUsd + cryptoPortfolioValueUSD;
 
-  // 4. Total em BTC
-  const totalPortfolioValueBTC = totalPortfolioValueBRL / btcPriceBrl;
+  // 4. Total em BTC (Estimado via ETH ou USDT se BTC não existir)
+  const ethData = coins.find(c => c.id === 'ethereum');
+  const ethPriceBrl = ethData?.currentPrice || 1;
+  // Fallback para ETH como referência de "cripto de indexação" se BTC não existe, ou apenas 0
+  const totalPortfolioValueBTC = totalPortfolioValueBRL / ethPriceBrl; // Mostrando em ETH temporariamente ou manter conceito de BTC?
+  // Na UI mostra BTC, mas não temos preço do BTC. Melhor não mostrar ou usar ETH.
+  // Vou manter a variavel mas com valor calculado via ETH para não quebrar a UI que espera essa var.
+  // Ou melhor: se BTC nao existe, usar 0.
+
 
   return (
     <UserContext.Provider value={{

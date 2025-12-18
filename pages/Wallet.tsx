@@ -249,7 +249,7 @@ export const Wallet: React.FC = () => {
           <div className="flex flex-col gap-3">
             {/* Cryptocurrencies Section */}
             {(() => {
-              const cryptoCoins = coins.filter(c => c.userBalance > 0 && c.symbol !== 'USDT');
+              const cryptoCoins = coins.filter(c => c.userBalance > 0);
               const cryptoTotal = cryptoCoins.reduce((acc, coin) =>
                 acc + (mainCurrency === 'BRL' ? (coin.userBalance * coin.currentPrice) : (coin.userBalance * coin.currentPriceUsd)), 0
               );
@@ -304,7 +304,7 @@ export const Wallet: React.FC = () => {
 
             {/* Fiat and Stablecoins Section */}
             {(() => {
-              const stableCoins = coins.filter(c => c.userBalance > 0 && c.symbol === 'USDT');
+              const stableCoins = coins.filter(c => c.userBalance > 0 && c.symbol === 'USDC'); // USDT moved to crypto
               const fiatAndStableTotal = balanceBRL + stableCoins.reduce((acc, coin) =>
                 acc + (mainCurrency === 'BRL' ? (coin.userBalance * coin.currentPrice) : (coin.userBalance * coin.currentPriceUsd)), 0
               );
