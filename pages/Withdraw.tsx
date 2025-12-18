@@ -4,6 +4,33 @@ import { useUser } from '../context/UserContext';
 import { RoutePath } from '../types';
 import { COIN_NETWORKS } from '../constants';
 
+// Formata número para padrão brasileiro: 1.234.567,89
+const formatBRNumber = (value: string): string => {
+  if (!value) return '';
+
+  // Remove tudo exceto números e vírgula
+  const cleaned = value.replace(/[^\d,]/g, '');
+
+  // Separa parte inteira e decimal
+  const parts = cleaned.split(',');
+  let integerPart = parts[0];
+  const decimalPart = parts[1] || '';
+
+  // Adiciona pontos como separadores de milhares
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  // Retorna formatado
+  return decimalPart ? `${integerPart},${decimalPart}` : integerPart;
+};
+
+// Converte formato BR para número (para validação/cálculo)
+const parseBRNumber = (value: string): number => {
+  if (!value) return 0;
+  // Remove pontos e troca vírgula por ponto
+  const normalized = value.replace(/\./g, '').replace(',', '.');
+  return parseFloat(normalized) || 0;
+};
+
 export const Withdraw: React.FC = () => {
   const navigate = useNavigate();
   const { coins, withdraw, isLoading } = useUser();
@@ -27,7 +54,10 @@ export const Withdraw: React.FC = () => {
   }, [selectedCoinId]);
 
   const handleMaxClick = () => {
-    setAmount(selectedCoin?.userBalance.toString() || '0');
+    const maxValue = selectedCoin?.userBalance.toString() || '0';
+    // Formata para padrão BR
+    const formatted = formatBRNumber(maxValue.replace('.', ','));
+    setAmount(formatted);
   };
 
   const handleSend = () => {
@@ -42,7 +72,7 @@ export const Withdraw: React.FC = () => {
       setError('Por favor, selecione uma rede.');
       return;
     }
-    const val = parseFloat(amount);
+    const val = parseBRNumber(amount);
     if (isNaN(val) || val <= 0) {
       setError('Digite um valor válido.');
       return;
@@ -170,11 +200,14 @@ export const Withdraw: React.FC = () => {
               value={amount}
               onChange={(e) => {
                 const val = e.target.value;
-                if (val === '' || /^\d*\.?\d*$/.test(val)) {
-                  setAmount(val);
+                // Permite apenas números, vírgula e ponto
+                if (val === '' || /^[\d.,]*$/.test(val)) {
+                  // Formata enquanto digita
+                  const formatted = formatBRNumber(val);
+                  setAmount(formatted);
                 }
               }}
-              placeholder="Mínimo 10.00"
+              placeholder="0,00"
               className="w-full rounded-xl bg-background-card border border-white/10 p-4 pr-20 text-white placeholder-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             />
             <div className="absolute right-2 flex items-center gap-2">
