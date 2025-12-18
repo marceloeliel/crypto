@@ -278,13 +278,13 @@ export const Wallet: React.FC = () => {
                   <div className="border-t border-white/5">
                     {cryptoCoins.map((coin) => (
                       <div key={coin.id} className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5 last:border-b-0">
-                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10 overflow-hidden">
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
                           {coin.image ? (
                             <img src={coin.image} alt={coin.name} className="w-full h-full object-cover" />
                           ) : coin.isIconText ? (
-                            <p className="font-bold text-primary text-xl">{coin.icon}</p>
+                            <p className="font-bold text-primary text-lg">{coin.icon}</p>
                           ) : (
-                            <span className="material-symbols-outlined text-primary text-2xl">{coin.icon}</span>
+                            <span className="material-symbols-outlined text-primary text-xl">{coin.icon}</span>
                           )}
                         </div>
                         <div className="flex-1">
@@ -329,8 +329,8 @@ export const Wallet: React.FC = () => {
                   <div className="border-t border-white/5">
                     {/* BRL Balance */}
                     <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
-                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10">
-                        <p className="font-bold text-green-500 text-lg">R$</p>
+                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10">
+                        <p className="font-bold text-green-500 text-base">R$</p>
                       </div>
                       <div className="flex-1">
                         <p className="font-bold text-white">{t.wallet.fiatName}</p>
@@ -343,8 +343,8 @@ export const Wallet: React.FC = () => {
 
                     {/* GBP Balance */}
                     <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
-                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10">
-                        <p className="font-bold text-blue-400 text-lg">£</p>
+                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10">
+                        <p className="font-bold text-blue-400 text-base">£</p>
                       </div>
                       <div className="flex-1">
                         <p className="font-bold text-white">Libra esterlina</p>
@@ -359,13 +359,13 @@ export const Wallet: React.FC = () => {
                     {/* Stablecoins */}
                     {stableCoins.map((coin) => (
                       <div key={coin.id} className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5 last:border-b-0">
-                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10 overflow-hidden">
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
                           {coin.image ? (
                             <img src={coin.image} alt={coin.name} className="w-full h-full object-cover" />
                           ) : coin.isIconText ? (
-                            <p className="font-bold text-primary text-xl">{coin.icon}</p>
+                            <p className="font-bold text-primary text-lg">{coin.icon}</p>
                           ) : (
-                            <span className="material-symbols-outlined text-primary text-2xl">{coin.icon}</span>
+                            <span className="material-symbols-outlined text-primary text-xl">{coin.icon}</span>
                           )}
                         </div>
                         <div className="flex-1">
