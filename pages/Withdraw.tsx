@@ -200,10 +200,10 @@ export const Withdraw: React.FC = () => {
       {/* Action Button */}
       <footer className="p-4 mt-auto border-t border-white/5 bg-background-dark">
         <div className="flex justify-between items-center mb-4 px-1">
-          <span className="text-zinc-400 text-sm">Total a receber:</span>
+          <span className="text-zinc-400 text-sm">Total a enviar:</span>
           <div className="text-right">
             <span className="text-xl font-bold text-white block">
-              {amount ? (parseFloat(amount) > 1 ? (parseFloat(amount) - 1).toFixed(4) : '0.00') : '0.00'} {selectedCoin.symbol}
+              {amount ? parseFloat(amount).toFixed(2) : '0.00'} {selectedCoin.symbol}
             </span>
           </div>
         </div>
