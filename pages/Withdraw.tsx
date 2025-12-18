@@ -195,26 +195,25 @@ export const Withdraw: React.FC = () => {
           </div>
         )}
 
-      </main>
-
-      {/* Action Button */}
-      <footer className="p-4 mt-auto border-t border-white/5 bg-background-dark">
-        <div className="flex justify-between items-center mb-4 px-1">
-          <span className="text-zinc-400 text-sm">Total a enviar:</span>
-          <div className="text-right">
-            <span className="text-xl font-bold text-white block">
-              {amount ? parseFloat(amount).toFixed(2) : '0.00'} {selectedCoin.symbol}
-            </span>
+        {/* Summary Footer */}
+        <div className="mt-auto bg-background-card p-4 rounded-t-2xl border-t border-white/5 -m-4">
+          <div className="flex justify-between items-end mb-4">
+            <span className="text-zinc-400 text-sm">Total a enviar:</span>
+            <div className="text-right">
+              <span className="text-2xl font-bold block">{amount || '0.00'} {selectedCoin.symbol}</span>
+              <span className="text-xs text-zinc-500">Taxa de rede incluída</span>
+            </div>
           </div>
+          <button
+            onClick={handleSend}
+            disabled={isLoading}
+            className="w-full h-12 bg-primary text-white font-bold rounded-lg text-base active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Enviar
+          </button>
         </div>
-        <button
-          onClick={handleSend}
-          disabled={isLoading}
-          className="w-full h-12 bg-primary text-white font-bold rounded-lg text-base active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Enviar
-        </button>
-      </footer>
+      </main>
     </div>
   );
 };
+```
