@@ -278,8 +278,10 @@ export const Wallet: React.FC = () => {
                   <div className="border-t border-white/5">
                     {cryptoCoins.map((coin) => (
                       <div key={coin.id} className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5 last:border-b-0">
-                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10">
-                          {coin.isIconText ? (
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10 overflow-hidden">
+                          {coin.image ? (
+                            <img src={coin.image} alt={coin.name} className="w-full h-full object-cover" />
+                          ) : coin.isIconText ? (
                             <p className="font-bold text-primary text-xl">{coin.icon}</p>
                           ) : (
                             <span className="material-symbols-outlined text-primary text-2xl">{coin.icon}</span>
@@ -357,8 +359,10 @@ export const Wallet: React.FC = () => {
                     {/* Stablecoins */}
                     {stableCoins.map((coin) => (
                       <div key={coin.id} className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5 last:border-b-0">
-                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10">
-                          {coin.isIconText ? (
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10 overflow-hidden">
+                          {coin.image ? (
+                            <img src={coin.image} alt={coin.name} className="w-full h-full object-cover" />
+                          ) : coin.isIconText ? (
                             <p className="font-bold text-primary text-xl">{coin.icon}</p>
                           ) : (
                             <span className="material-symbols-outlined text-primary text-2xl">{coin.icon}</span>

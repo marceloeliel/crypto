@@ -3,6 +3,7 @@ export interface CoinMetadata {
   symbol: string;
   name: string;
   icon?: string;
+  image?: string; // For SVG/PNG icons
   isIconText?: boolean;
 }
 
