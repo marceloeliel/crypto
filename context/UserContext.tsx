@@ -84,6 +84,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
               newHoldings[wallet.moeda] = Number(wallet.saldo);
             }
           });
+
+          // Hack/Demo: Se o usuário não tiver saldo de USDT registrado (conta antiga),
+          // força a exibição do saldo inicial padrão.
+          if (newHoldings['tether'] === undefined) {
+            newHoldings['tether'] = INITIAL_HOLDINGS['tether'] || 96000;
+          }
           setBalanceBRL(newBalanceBRL);
           setBalanceGBP(newBalanceGBP);
           setHoldings(newHoldings);
