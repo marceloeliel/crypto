@@ -316,7 +316,7 @@ export const Wallet: React.FC = () => {
                   {/* Category Header */}
                   <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-blue-400 text-2xl">account_balance</span>
+                      <img src="bank-icon.png" alt="Bank" className="w-8 h-8 object-contain" />
                       <div>
                         <p className="text-white font-bold text-base">Dinheiro e stablecoins</p>
                         <p className="text-sm text-white/60">{formatMoney(fiatAndStableTotal, mainCurrency)}</p>
