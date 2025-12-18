@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '../types';
 import { useUser } from '../context/UserContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const DepositOptions: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'fiat' | 'crypto'>('fiat');
   const { coins } = useUser();
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredCoins = coins.filter(coin =>
@@ -24,7 +26,7 @@ export const DepositOptions: React.FC = () => {
         >
           <span className="material-symbols-outlined text-3xl">arrow_back</span>
         </button>
-        <h1 className="flex-1 text-center text-lg font-bold leading-tight tracking-tight text-white">Depositar</h1>
+        <h1 className="flex-1 text-center text-lg font-bold leading-tight tracking-tight text-white">{t.depositOptions.title}</h1>
         <div className="size-10 shrink-0"></div>
       </div>
 
@@ -36,14 +38,14 @@ export const DepositOptions: React.FC = () => {
             className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'fiat' ? 'bg-zinc-700 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
               }`}
           >
-            Dinheiro
+            {t.depositOptions.fiatTab}
           </button>
           <button
             onClick={() => setActiveTab('crypto')}
             className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'crypto' ? 'bg-zinc-700 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
               }`}
           >
-            Cripto
+            {t.depositOptions.cryptoTab}
           </button>
         </div>
       </div>
@@ -62,8 +64,8 @@ export const DepositOptions: React.FC = () => {
                   <span className="material-symbols-outlined text-2xl">photos</span>
                 </div>
                 <div className="flex flex-1 flex-col justify-center">
-                  <p className="text-base font-medium leading-normal text-white">Transferência Bancária (PIX)</p>
-                  <p className="text-sm font-normal leading-normal text-zinc-400">Depósito instantâneo via PIX. Sem taxas.</p>
+                  <p className="text-base font-medium leading-normal text-white">{t.depositOptions.pixTitle}</p>
+                  <p className="text-sm font-normal leading-normal text-zinc-400">{t.depositOptions.pixDesc}</p>
                 </div>
                 <div className="shrink-0">
                   <div className="flex size-7 items-center justify-center text-zinc-500">
@@ -72,7 +74,7 @@ export const DepositOptions: React.FC = () => {
                 </div>
               </div>
               <div className="absolute -top-2 left-4 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white shadow-md">
-                Recomendado
+                {t.depositOptions.recommended}
               </div>
             </div>
 
@@ -82,8 +84,8 @@ export const DepositOptions: React.FC = () => {
                 <span className="material-symbols-outlined text-2xl">account_balance</span>
               </div>
               <div className="flex flex-1 flex-col justify-center">
-                <p className="text-base font-medium leading-normal text-white">Transferência Bancária (TED)</p>
-                <p className="text-sm font-normal leading-normal text-zinc-400">Disponível em horário comercial.</p>
+                <p className="text-base font-medium leading-normal text-white">{t.depositOptions.tedTitle}</p>
+                <p className="text-sm font-normal leading-normal text-zinc-400">{t.depositOptions.tedDesc}</p>
               </div>
               <div className="shrink-0">
                 <div className="flex size-7 items-center justify-center text-zinc-500">
@@ -98,8 +100,8 @@ export const DepositOptions: React.FC = () => {
                 <span className="material-symbols-outlined text-2xl">credit_card</span>
               </div>
               <div className="flex flex-1 flex-col justify-center">
-                <p className="text-base font-medium leading-normal text-white">Comprar com Cartão</p>
-                <p className="text-sm font-normal leading-normal text-zinc-400">Use seu cartão de crédito ou débito.</p>
+                <p className="text-base font-medium leading-normal text-white">{t.depositOptions.cardTitle}</p>
+                <p className="text-sm font-normal leading-normal text-zinc-400">{t.depositOptions.cardDesc}</p>
               </div>
               <div className="shrink-0">
                 <div className="flex size-7 items-center justify-center text-zinc-500">
@@ -115,7 +117,7 @@ export const DepositOptions: React.FC = () => {
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/50">search</span>
               <input
                 className="w-full rounded-lg border-none bg-white/5 py-3 pl-10 pr-4 text-white placeholder-white/50 focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-                placeholder="Pesquisar moeda"
+                placeholder={t.depositOptions.searchPlaceholder}
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -123,7 +125,7 @@ export const DepositOptions: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-zinc-400 font-bold ml-1">Lista de Criptomoedas</p>
+              <p className="text-sm text-zinc-400 font-bold ml-1">{t.depositOptions.cryptoList}</p>
               {filteredCoins.map((coin) => (
                 <div key={coin.id} className="flex items-center gap-4 p-3 bg-background-card rounded-xl border border-white/5 hover:bg-white/5 active:scale-[0.99] transition-all cursor-pointer">
                   <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10 border border-white/10 overflow-hidden">
@@ -145,7 +147,7 @@ export const DepositOptions: React.FC = () => {
                 </div>
               ))}
               {filteredCoins.length === 0 && (
-                <p className="text-center text-zinc-500 py-8">Nenhuma moeda encontrada.</p>
+                <p className="text-center text-zinc-500 py-8">{t.depositOptions.noCoins}</p>
               )}
             </div>
           </div>
@@ -154,7 +156,7 @@ export const DepositOptions: React.FC = () => {
 
       {/* Footer Help Link */}
       <div className="mt-auto pb-8 pt-6">
-        <p className="text-center text-sm font-normal leading-normal text-zinc-400 underline cursor-pointer hover:text-white">Precisa de ajuda?</p>
+        <p className="text-center text-sm font-normal leading-normal text-zinc-400 underline cursor-pointer hover:text-white">{t.depositOptions.help}</p>
       </div>
     </div>
   );

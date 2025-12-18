@@ -274,11 +274,11 @@ export const Wallet: React.FC = () => {
                   <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-3">
                       <div>
-                        <p className="text-white font-bold text-base">Criptomoedas</p>
+                        <p className="text-white font-bold text-base">{t.wallet.cryptos}</p>
                         <p className="text-sm text-white/60">
                           {formatMoney(cryptoTotal, mainCurrency)}
                           <span className={`ml-2 ${cryptoChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            ({cryptoChange >= 0 ? '+' : ''}{cryptoChange.toFixed(2)}%) hoje
+                            ({cryptoChange >= 0 ? '+' : ''}{cryptoChange.toFixed(2)}%) {t.wallet.today}
                           </span>
                         </p>
                       </div>
@@ -330,7 +330,7 @@ export const Wallet: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <img src="bank-icon.png" alt="Bank" className="w-8 h-8 object-contain" />
                       <div>
-                        <p className="text-white font-bold text-base">Real Brasileiro</p>
+                        <p className="text-white font-bold text-base">{t.wallet.fiatSection}</p>
                         <p className="text-sm text-white/60">{formatMoney(fiatAndStableTotal, mainCurrency)}</p>
                       </div>
                     </div>
@@ -430,7 +430,7 @@ export const Wallet: React.FC = () => {
                   }}
                   className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
                 >
-                  <option value="">Selecione uma moeda</option>
+                  <option value="">{t.wallet.selectCoin}</option>
                   {coins.map(coin => (
                     <option key={coin.id} value={coin.id}>{coin.name} ({coin.symbol})</option>
                   ))}
@@ -450,13 +450,13 @@ export const Wallet: React.FC = () => {
                     className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
                     placeholder="0.00"
                   />
-                  <p className="text-xs text-zinc-500 mt-2">Saldo atual: {coins.find(c => c.id === selectedCoin)?.userBalance}</p>
+                  <p className="text-xs text-zinc-500 mt-2">{t.wallet.balance}: {coins.find(c => c.id === selectedCoin)?.userBalance}</p>
                 </div>
               )}
 
               {/* Existing Assets List (Quick Edit) */}
               <div className="mt-8">
-                <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-primary">Seus Ativos Atuais</h3>
+                <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-primary">{t.wallet.currentAssets}</h3>
                 <div className="space-y-3">
                   {coins.filter(c => c.userBalance > 0).map(coin => (
                     <div key={coin.id} className="flex items-center justify-between bg-zinc-800/50 p-3 rounded-lg border border-white/5">
@@ -475,7 +475,7 @@ export const Wallet: React.FC = () => {
                         }}
                         className="text-primary text-sm font-bold hover:underline"
                       >
-                        Editar ({coin.userBalance})
+                        {t.wallet.edit} ({coin.userBalance})
                       </button>
                     </div>
                   ))}
