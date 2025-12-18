@@ -78,7 +78,9 @@ export const translations = {
             settings: "Configurações",
             help: "Ajuda e Suporte",
             logout: "Sair",
-            version: "Versão 1.0.4 - Coinbase"
+            version: "Versão 1.0.4 - Coinbase",
+            new: "NOVO",
+            id: "ID"
         },
         login: {
             welcome: "Bem-vindo à Coinbase",
@@ -184,7 +186,9 @@ export const translations = {
             settings: "Settings",
             help: "Help & Support",
             logout: "Log Out",
-            version: "Version 1.0.4 - Coinbase"
+            version: "Version 1.0.4 - Coinbase",
+            new: "NEW",
+            id: "ID"
         },
         login: {
             welcome: "Welcome to Coinbase",
@@ -290,7 +294,9 @@ export const translations = {
             settings: "Configuración",
             help: "Ayuda y Soporte",
             logout: "Cerrar Sesión",
-            version: "Versión 1.0.4 - Coinbase"
+            version: "Versión 1.0.4 - Coinbase",
+            new: "NUEVO",
+            id: "ID"
         },
         login: {
             welcome: "Bienvenido a Coinbase",

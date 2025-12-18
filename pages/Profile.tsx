@@ -78,7 +78,7 @@ export const Profile: React.FC = () => {
           </span>
           <span className="text-xs bg-zinc-800 text-zinc-300 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 border border-white/5">
             <span className="material-symbols-outlined text-[14px]">link</span>
-            ID: 8493021
+            {t.profile.id}: 8493021
           </span>
         </div>
 
@@ -124,7 +124,8 @@ export const Profile: React.FC = () => {
               <button className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-zinc-800/50 transition-colors active:bg-zinc-800 group">
                 <span className="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors">group_add</span>
                 <span className="text-base font-medium text-zinc-200 group-hover:text-white flex-1 text-left">{t.profile.referral}</span>
-                <div className="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded ml-2">NOVO</div>
+                <div className="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded ml-2">{t.profile.new}</div>
+
                 <span className="material-symbols-outlined text-zinc-600 text-sm ml-auto">arrow_forward_ios</span>
               </button>
             </li>
