@@ -2,7 +2,7 @@ import { CoinMetadata } from './types';
 
 // Initial Holdings (Quantidade de moedas que o usuário tem, não o valor em R$)
 export const INITIAL_HOLDINGS: Record<string, number> = {
-  'bitcoin': 0.05, 
+  'bitcoin': 0.05,
   'ethereum': 1.5,
   'tether': 1250.00, // Adicionado saldo USDT
   'solana': 20,
@@ -12,22 +12,16 @@ export const INITIAL_HOLDINGS: Record<string, number> = {
 
 export const SUPPORTED_COINS: CoinMetadata[] = [
   {
-    id: 'bitcoin',
-    symbol: 'BTC',
-    name: 'Bitcoin',
-    icon: 'currency_bitcoin'
+    id: 'tether',
+    symbol: 'USDT',
+    name: 'Tether',
+    icon: 'monetization_on' // Icone de moeda para USDT
   },
   {
     id: 'ethereum',
     symbol: 'ETH',
     name: 'Ethereum',
-    icon: 'currency_bitcoin' // Using generic icon for demo consistency
-  },
-  {
-    id: 'tether',
-    symbol: 'USDT',
-    name: 'Tether',
-    icon: 'attach_money' // Icone de cifrão para USDT
+    icon: 'currency_bitcoin'
   },
   {
     id: 'solana',
