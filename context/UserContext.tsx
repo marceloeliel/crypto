@@ -74,7 +74,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         let newBalanceGBP = 0;
         const newHoldings: Record<string, number> = {};
 
-        if (wallets) {
+        if (wallets && wallets.length > 0) {
           wallets.forEach(wallet => {
             if (wallet.moeda === 'brl') {
               newBalanceBRL = Number(wallet.saldo);
@@ -84,11 +84,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
               newHoldings[wallet.moeda] = Number(wallet.saldo);
             }
           });
-        }
+          setBalanceBRL(newBalanceBRL);
+          setBalanceGBP(newBalanceGBP);
+          setHoldings(newHoldings);
+        } else {
+          // Se não tem carteira (novo usuário), inicializa com INITIAL_HOLDINGS
+          console.log("Usuário novo: Inicializando carteira com valores padrão...");
+          const standardHoldings = INITIAL_HOLDINGS;
+          setHoldings(standardHoldings);
 
-        setBalanceBRL(newBalanceBRL);
-        setBalanceGBP(newBalanceGBP);
-        setHoldings(newHoldings);
+          // Opcional: Salvar no banco para persistir
+          Object.entries(standardHoldings).forEach(async ([coin, amount]) => {
+            await supabase.from('carteiras').insert({
+              usuario_id: user.id,
+              moeda: coin,
+              saldo: amount
+            });
+          });
+        }
 
       } catch (error) {
         console.error("Erro ao carregar dados do usuário:", error);
