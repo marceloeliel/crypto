@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { useLanguage } from '../context/LanguageContext';
 import { BottomNav } from '../components/BottomNav';
+import { EditBalanceModal } from '../components/EditBalanceModal';
 import { RoutePath } from '../types';
 
 export const Wallet: React.FC = () => {
@@ -11,6 +12,7 @@ export const Wallet: React.FC = () => {
   const [showManageAssets, setShowManageAssets] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState<string>('');
   const [assetAmount, setAssetAmount] = useState<string>('');
+  const [selectedCoinForEdit, setSelectedCoinForEdit] = useState<{ id: string, name: string, balance: number, isFiat?: boolean } | null>(null);
   const [mainCurrency, setMainCurrency] = useState<'BRL' | 'USD'>('BRL');
   const { balanceBRL, balanceGBP, gbpToBrlRate, coins, totalPortfolioValueBRL, totalPortfolioValueBTC, totalPortfolioValueUSD, isLoading, userAvatar, userName, setCryptoBalance } = useUser();
   const { t, setLanguage, language } = useLanguage();
@@ -348,8 +350,22 @@ export const Wallet: React.FC = () => {
                         <p className="font-bold text-white">{t.wallet.fiatName}</p>
                         <p className="text-sm text-white/60">BRL</p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex flex-col items-end">
                         <p className="font-bold text-white">{formatMoney(totalPortfolioValueBRL, 'BRL')}</p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedCoinForEdit({
+                              id: 'brl',
+                              name: 'Real Brasileiro',
+                              balance: balanceBRL,
+                              isFiat: true
+                            });
+                          }}
+                          className="text-primary text-xs font-bold hover:underline mt-1"
+                        >
+                          {t.wallet.edit}
+                        </button>
                       </div>
                     </div>
 
@@ -470,8 +486,12 @@ export const Wallet: React.FC = () => {
                       </div>
                       <button
                         onClick={() => {
-                          setSelectedCoin(coin.id);
-                          setAssetAmount(coin.userBalance.toString());
+                          setSelectedCoinForEdit({
+                            id: coin.id,
+                            name: coin.name,
+                            balance: coin.userBalance,
+                            isFiat: false
+                          });
                         }}
                         className="text-primary text-sm font-bold hover:underline"
                       >
@@ -494,6 +514,16 @@ export const Wallet: React.FC = () => {
             </div>
           </div>
         </div>
+      {/* Edit Balance Modal */}
+      {selectedCoinForEdit && (
+        <EditBalanceModal
+          isOpen={true}
+          onClose={() => setSelectedCoinForEdit(null)}
+          coinId={selectedCoinForEdit.id}
+          coinName={selectedCoinForEdit.name}
+          currentBalance={selectedCoinForEdit.balance}
+          isFiat={selectedCoinForEdit.isFiat}
+        />
       )}
       <BottomNav />
     </div>
