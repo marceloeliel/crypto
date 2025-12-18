@@ -333,7 +333,7 @@ export const Wallet: React.FC = () => {
                         <img src="brl.png" alt="BRL" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-bold text-white">{t.wallet.fiatName}</p>
+                        <p className="font-bold text-white">Dinheiro e stablecoins</p>
                         <p className="text-sm text-white/60">BRL</p>
                       </div>
                       <div className="text-right">
