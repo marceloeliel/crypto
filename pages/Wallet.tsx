@@ -349,7 +349,7 @@ export const Wallet: React.FC = () => {
                         <p className="text-sm text-white/60">BRL</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-white">{formatMoney(balanceBRL, 'BRL')}</p>
+                        <p className="font-bold text-white">{formatMoney(totalPortfolioValueBRL, 'BRL')}</p>
                       </div>
                     </div>
 
