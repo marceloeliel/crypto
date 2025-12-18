@@ -29,7 +29,10 @@ export const BottomNav: React.FC = () => {
         <span className="material-symbols-outlined text-white text-3xl">currency_exchange</span>
       </button>
 
-      <button className="flex flex-col items-center gap-1 text-white/60 hover:text-white transition-colors">
+      <button
+        onClick={() => navigate(RoutePath.TRADE)}
+        className={`flex flex-col items-center gap-1 transition-colors ${isActive(RoutePath.TRADE) ? 'text-white' : 'text-white/60 hover:text-white'}`}
+      >
         <span className="material-symbols-outlined">candlestick_chart</span>
         <span className="text-xs font-medium">{t.nav.trade}</span>
       </button>
