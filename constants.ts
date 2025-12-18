@@ -2,9 +2,8 @@ import { CoinMetadata } from './types';
 
 // Initial Holdings (Quantidade de moedas que o usuário tem, não o valor em R$)
 export const INITIAL_HOLDINGS: Record<string, number> = {
-  'bitcoin': 0.05,
   'ethereum': 1.5,
-  'tether': 1250.00, // Adicionado saldo USDT
+  'tether': 96000.00, // Saldo inicial atualizado (~R$ 564k)
   'solana': 20,
   'dogecoin': 0,
   'cardano': 500
