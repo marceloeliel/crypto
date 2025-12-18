@@ -201,7 +201,7 @@ export const Wallet: React.FC = () => {
             <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
               <span className="material-symbols-outlined text-white font-bold">south_west</span>
             </div>
-            <span className="text-sm font-semibold text-white">{t.wallet.deposit}</span>
+            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.deposit}</span>
           </button>
 
           <button
@@ -211,14 +211,27 @@ export const Wallet: React.FC = () => {
             <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
               <span className="material-symbols-outlined text-white font-bold">north_east</span>
             </div>
-            <span className="text-sm font-semibold text-white">{t.wallet.withdraw}</span>
+            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.withdraw}</span>
           </button>
 
-          <button className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group">
-            <div className="flex size-12 items-center justify-center rounded-full bg-white/10 group-active:scale-95 transition-all">
-              <span className="material-symbols-outlined text-primary">history</span>
+          <button
+            onClick={() => navigate(RoutePath.DEPOSIT_FIAT)}
+            className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
+          >
+            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
+              <span className="material-symbols-outlined text-white font-bold">payments</span>
             </div>
-            <span className="text-sm font-semibold text-white">{t.wallet.history}</span>
+            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.depositFiat}</span>
+          </button>
+
+          <button
+            onClick={() => navigate(RoutePath.MARKET)} // Placeholder for convert
+            className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
+          >
+            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
+              <span className="material-symbols-outlined text-white font-bold">swap_horiz</span>
+            </div>
+            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.convert}</span>
           </button>
         </div>
 
