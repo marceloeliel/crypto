@@ -165,9 +165,15 @@ export const Withdraw: React.FC = () => {
           <label className="text-sm font-medium text-zinc-400">Valor</label>
           <div className="relative flex items-center">
             <input
-              type="number"
+              type="text"
+              inputMode="decimal"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === '' || /^\d*\.?\d*$/.test(val)) {
+                  setAmount(val);
+                }
+              }}
               placeholder="Mínimo 10.00"
               className="w-full rounded-xl bg-background-card border border-white/10 p-4 pr-20 text-white placeholder-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             />
@@ -216,4 +222,3 @@ export const Withdraw: React.FC = () => {
     </div>
   );
 };
-```
