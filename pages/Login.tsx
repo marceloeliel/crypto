@@ -48,7 +48,7 @@ export const Login: React.FC = () => {
     <div className="relative flex h-auto min-h-screen w-full flex-col p-4 bg-background-dark font-display text-white">
       <header className="flex justify-center pt-12 pb-8">
         <img
-          src="/binance-logo.png"
+          src="binance-logo.png"
           alt="Coinbase Logo"
           className="h-12 w-auto"
         />
