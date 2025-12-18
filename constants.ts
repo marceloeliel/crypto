@@ -18,6 +18,12 @@ export const SUPPORTED_COINS: CoinMetadata[] = [
     image: 'tether.png'
   },
   {
+    id: 'bitcoin',
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    icon: 'currency_bitcoin'
+  },
+  {
     id: 'ethereum',
     symbol: 'ETH',
     name: 'Ethereum',

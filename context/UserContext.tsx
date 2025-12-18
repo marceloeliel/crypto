@@ -150,11 +150,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       const updatedCoins: CoinData[] = SUPPORTED_COINS.map(meta => {
         const apiData = data[meta.id];
+        // Encontrar dados anteriores para preservar caso a API falhe para esta moeda específica
+        const previousData = coins.find(c => c.id === meta.id);
+
         return {
           ...meta,
-          currentPrice: apiData?.brl || 0,
-          currentPriceUsd: apiData?.usd || 0,
-          change24h: apiData?.brl_24h_change || 0,
+          currentPrice: apiData?.brl || previousData?.currentPrice || 0,
+          currentPriceUsd: apiData?.usd || previousData?.currentPriceUsd || 0,
+          change24h: apiData?.brl_24h_change || previousData?.change24h || 0,
           userBalance: holdings[meta.id] || 0
         };
       });
