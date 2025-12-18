@@ -514,6 +514,8 @@ export const Wallet: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
       {/* Edit Balance Modal */}
       {selectedCoinForEdit && (
         <EditBalanceModal
