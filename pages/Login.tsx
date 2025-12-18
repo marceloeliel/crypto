@@ -39,7 +39,7 @@ export const Login: React.FC = () => {
       if (error) {
         alert(t.login.alerts.loginError + error.message);
       } else {
-        navigate(RoutePath.WALLET);
+        navigate(RoutePath.HOME);
       }
     }
   };
