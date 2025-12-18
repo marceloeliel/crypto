@@ -13,8 +13,8 @@ export const BottomNav: React.FC = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 h-20 bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800 flex justify-around items-center px-4 z-50">
       <button
-        onClick={() => navigate(RoutePath.WALLET)}
-        className={`flex flex-col items-center gap-1 transition-colors ${isActive(RoutePath.WALLET) ? 'text-white' : 'text-white/60 hover:text-white'}`}
+        onClick={() => navigate(RoutePath.HOME)}
+        className={`flex flex-col items-center gap-1 transition-colors ${isActive(RoutePath.HOME) ? 'text-white' : 'text-white/60 hover:text-white'}`}
       >
         <span className="material-symbols-outlined">home</span>
         <span className="text-xs font-bold">Home</span>
