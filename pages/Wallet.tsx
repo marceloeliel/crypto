@@ -350,22 +350,8 @@ export const Wallet: React.FC = () => {
                         <p className="font-bold text-white">{t.wallet.fiatName}</p>
                         <p className="text-sm text-white/60">BRL</p>
                       </div>
-                      <div className="text-right flex flex-col items-end">
+                      <div className="text-right">
                         <p className="font-bold text-white">{formatMoney(totalPortfolioValueBRL, 'BRL')}</p>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedCoinForEdit({
-                              id: 'brl',
-                              name: 'Real Brasileiro',
-                              balance: balanceBRL,
-                              isFiat: true
-                            });
-                          }}
-                          className="text-primary text-xs font-bold hover:underline mt-1"
-                        >
-                          {t.wallet.edit}
-                        </button>
                       </div>
                     </div>
 
