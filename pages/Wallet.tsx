@@ -219,7 +219,7 @@ export const Wallet: React.FC = () => {
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
-              <span className="material-symbols-outlined text-white text-2xl">swap_vert</span>
+              <span className="material-symbols-outlined text-white text-2xl">payments</span>
             </div>
             <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.depositFiat}</span>
           </button>
@@ -325,15 +325,27 @@ export const Wallet: React.FC = () => {
 
               return (
                 <div className="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+                  {/* Category Header */}
+                  <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <img src="bank-icon.png" alt="Bank" className="w-8 h-8 object-contain" />
+                      <div>
+                        <p className="text-white font-bold text-base">Real Brasileiro</p>
+                        <p className="text-sm text-white/60">{formatMoney(fiatAndStableTotal, mainCurrency)}</p>
+                      </div>
+                    </div>
+                    <span className="material-symbols-outlined text-white/60">chevron_right</span>
+                  </div>
+
                   {/* Fiat and Stable Assets List */}
-                  <div>
+                  <div className="border-t border-white/5">
                     {/* BRL Balance */}
                     <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
                       <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
                         <img src="brl.png" alt="BRL" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-bold text-white">Dinheiro e stablecoins</p>
+                        <p className="font-bold text-white">{t.wallet.fiatName}</p>
                         <p className="text-sm text-white/60">BRL</p>
                       </div>
                       <div className="text-right">
