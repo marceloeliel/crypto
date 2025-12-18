@@ -15,7 +15,7 @@ export const SUPPORTED_COINS: CoinMetadata[] = [
     symbol: 'USDT',
     name: 'Tether',
     icon: 'monetization_on',
-    image: 'tether.svg'
+    image: 'tether.png'
   },
   {
     id: 'ethereum',
