@@ -273,7 +273,6 @@ export const Wallet: React.FC = () => {
                   {/* Category Header */}
                   <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-primary text-2xl">currency_bitcoin</span>
                       <div>
                         <p className="text-white font-bold text-base">Criptomoedas</p>
                         <p className="text-sm text-white/60">
