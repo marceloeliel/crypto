@@ -219,7 +219,7 @@ export const Wallet: React.FC = () => {
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
-              <span className="material-symbols-outlined text-white text-2xl">payments</span>
+              <span className="material-symbols-outlined text-white text-2xl">swap_vert</span>
             </div>
             <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.depositFiat}</span>
           </button>
