@@ -329,8 +329,8 @@ export const Wallet: React.FC = () => {
                   <div className="border-t border-white/5">
                     {/* BRL Balance */}
                     <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
-                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10">
-                        <p className="font-bold text-green-500 text-base">R$</p>
+                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
+                        <img src="brl.png" alt="BRL" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
                         <p className="font-bold text-white">{t.wallet.fiatName}</p>
