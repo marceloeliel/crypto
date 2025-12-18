@@ -198,40 +198,40 @@ export const Wallet: React.FC = () => {
             onClick={() => navigate(RoutePath.DEPOSIT_OPTIONS)}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
-              <span className="material-symbols-outlined text-white font-bold">south_west</span>
+            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
+              <span className="material-symbols-outlined text-white text-2xl">arrow_downward</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.deposit}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.deposit}</span>
           </button>
 
           <button
             onClick={() => navigate(RoutePath.WITHDRAW)}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
-              <span className="material-symbols-outlined text-white font-bold">north_east</span>
+            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
+              <span className="material-symbols-outlined text-white text-2xl">arrow_upward</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.withdraw}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.withdraw}</span>
           </button>
 
           <button
             onClick={() => navigate(RoutePath.DEPOSIT_FIAT)}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
-              <span className="material-symbols-outlined text-white font-bold">payments</span>
+            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
+              <span className="material-symbols-outlined text-white text-2xl">payments</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.depositFiat}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.depositFiat}</span>
           </button>
 
           <button
             onClick={() => navigate(RoutePath.MARKET)} // Placeholder for convert
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary group-active:scale-95 transition-all">
-              <span className="material-symbols-outlined text-white font-bold">swap_horiz</span>
+            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
+              <span className="material-symbols-outlined text-white text-2xl">swap_horiz</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-white text-center leading-tight">{t.wallet.convert}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.convert}</span>
           </button>
         </div>
 
