@@ -325,20 +325,8 @@ export const Wallet: React.FC = () => {
 
               return (
                 <div className="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
-                  {/* Category Header */}
-                  <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <img src="bank-icon.png" alt="Bank" className="w-8 h-8 object-contain" />
-                      <div>
-                        <p className="text-white font-bold text-base">Dinheiro e stablecoins</p>
-                        <p className="text-sm text-white/60">{formatMoney(fiatAndStableTotal, mainCurrency)}</p>
-                      </div>
-                    </div>
-                    <span className="material-symbols-outlined text-white/60">chevron_right</span>
-                  </div>
-
                   {/* Fiat and Stable Assets List */}
-                  <div className="border-t border-white/5">
+                  <div>
                     {/* BRL Balance */}
                     <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
                       <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
