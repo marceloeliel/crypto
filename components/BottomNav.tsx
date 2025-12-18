@@ -20,7 +20,10 @@ export const BottomNav: React.FC = () => {
         <span className="text-xs font-bold">Home</span>
       </button>
 
-      <button className="flex flex-col items-center gap-1 text-white/60 hover:text-white transition-colors">
+      <button
+        onClick={() => navigate(RoutePath.MARKET)}
+        className={`flex flex-col items-center gap-1 transition-colors ${isActive(RoutePath.MARKET) ? 'text-white' : 'text-white/60 hover:text-white'}`}
+      >
         <span className="material-symbols-outlined">bar_chart</span>
         <span className="text-xs font-medium">{t.nav.markets}</span>
       </button>
