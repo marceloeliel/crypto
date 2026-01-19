@@ -76,22 +76,13 @@ export const Wallet: React.FC = () => {
   const usdtBalance = coins.find(c => c.id === 'tether')?.userBalance || 0;
 
   const handleTransfer = () => {
-    // Logic: If activeBalance is 1 (BRL), send 'brl'. If 2 (USDT), send 'tether'.
-    // For now, we redirect to Withdraw page which handles sending.
-    // We can pass state to pre-select the coin if we want, but user didn't strictly ask for pre-selection, just that it "works" and deducts from that balance.
-    // Ideally, we pass the coin ID to the withdraw page. 
-    // The Withdraw page currently selects 'tether' by default. We can try to pass state.
-    // Since Withdraw.tsx doesn't seem to read location state for default coin, it might require a small update there too OR we just rely on user selecting it. 
-    // BUT, the requirement says "Quando clicar no saldo um ou dois... TRANSFERIR... vai abater do saldo".
-    // implying the context of the selected balance matters.
-    // Let's assume for now we just navigate to withdraw, and the user selects / or we update Withdraw to accept state later if needed.
-    // Actually, let's try to pass state, maybe we can update Withdraw.tsx quickly or just navigate for now.
-    // Requirement: "Nas duas moedas.(R$ e USDT)". 
-    // So if I clicked Saldo 1, I expect to transfer BRL.
-
-    // Navigate to Withdraw (Update Withdraw.tsx to read state if possible, otherwise user manually selects)
-    // I will implement the navigation.
-    navigate(RoutePath.WITHDRAW);
+    // Logic: If activeBalance is 1 (BRL), navigate to PIX Transfer.
+    // If 2 (USDT), navigate to Crypto Withdraw.
+    if (activeBalance === 1) {
+      navigate(RoutePath.PIX_TRANSFER);
+    } else {
+      navigate(RoutePath.WITHDRAW, { state: { selectedCoinId: 'tether' } });
+    }
   };
 
   return (

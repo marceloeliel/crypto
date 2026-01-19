@@ -56,5 +56,6 @@ export enum RoutePath {
   RESET_PASSWORD = "/reset-password",
   TRADE = "/trade",
   HOME = "/home",
-  TRANSACTIONS = "/transactions"
+  TRANSACTIONS = "/transactions",
+  PIX_TRANSFER = "/pix-transfer"
 }
