@@ -57,5 +57,6 @@ export enum RoutePath {
   TRADE = "/trade",
   HOME = "/home",
   TRANSACTIONS = "/transactions",
-  PIX_TRANSFER = "/pix-transfer"
+  PIX_TRANSFER = "/pix-transfer",
+  CONVERT = "/convert"
 }
