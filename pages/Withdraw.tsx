@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { RoutePath } from '../types';
 import { COIN_NETWORKS } from '../constants';
@@ -33,10 +33,14 @@ const parseBRNumber = (value: string): number => {
 
 export const Withdraw: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { coins, withdraw, isLoading } = useUser();
 
+  // Get initial coin from navigation state if available
+  const initialCoinId = location.state?.coinId || 'tether';
+
   // States
-  const [selectedCoinId, setSelectedCoinId] = useState<string>('tether');
+  const [selectedCoinId, setSelectedCoinId] = useState<string>(initialCoinId);
   const [address, setAddress] = useState('');
   const [network, setNetwork] = useState('');
   const [amount, setAmount] = useState('');
@@ -83,11 +87,11 @@ export const Withdraw: React.FC = () => {
     }
 
     // Processar envio
-    const isSuccess = withdraw(selectedCoinId, val);
+    const isSuccess = withdraw(selectedCoinId, val, address);
     if (isSuccess) {
       setSuccess(true);
       setTimeout(() => {
-        navigate(RoutePath.WALLET);
+        navigate(RoutePath.TRANSACTIONS);
       }, 2000);
     } else {
       setError('Erro ao processar transação. Tente novamente.');
@@ -202,9 +206,7 @@ export const Withdraw: React.FC = () => {
                 const val = e.target.value;
                 // Permite apenas números, vírgula e ponto
                 if (val === '' || /^[\d.,]*$/.test(val)) {
-                  // Formata enquanto digita
-                  const formatted = formatBRNumber(val);
-                  setAmount(formatted);
+                  setAmount(val);
                 }
               }}
               placeholder="0,00"
@@ -239,7 +241,7 @@ export const Withdraw: React.FC = () => {
           <div className="flex justify-between items-end mb-4">
             <span className="text-zinc-400 text-sm">Total a enviar:</span>
             <div className="text-right">
-              <span className="text-2xl font-bold block">{amount || '0.00'} {selectedCoin.symbol}</span>
+              <span className="text-2xl font-bold block">{amount || '0,00'} {selectedCoin.symbol}</span>
               <span className="text-xs text-zinc-500">Taxa de rede incluída</span>
             </div>
           </div>

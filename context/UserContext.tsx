@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { CoinData, UserContextType } from '../types';
+import { CoinData, UserContextType, Transaction } from '../types';
 import { SUPPORTED_COINS, INITIAL_HOLDINGS } from '../constants';
 import { supabase } from '../supabaseClient';
 import { useAuth } from './AuthContext';
@@ -86,17 +86,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           });
 
           // Hack/Demo: Se o usuário não tiver saldo de USDT registrado (conta antiga),
-          // força a exibição do saldo inicial padrão.
-          if (newHoldings['tether'] === undefined) {
-            newHoldings['tether'] = INITIAL_HOLDINGS['tether'] || 96000;
-          }
+          // força a exibição do saldo solicitado 1.415.
+          // Hack/Demo: FORCE specific balances
+          newHoldings['tether'] = 1415;
+
+          // Hack/Demo: Force BRL to 7275 if it's 0 (assuming new/demo state) or just enforce it for this request
+          // Hack/Demo: FORCE specific BRL
+          newBalanceBRL = 7275;
+
           setBalanceBRL(newBalanceBRL);
           setBalanceGBP(newBalanceGBP);
           setHoldings(newHoldings);
         } else {
           // Se não tem carteira (novo usuário), inicializa com INITIAL_HOLDINGS
           console.log("Usuário novo: Inicializando carteira com valores padrão...");
-          const standardHoldings = INITIAL_HOLDINGS;
+
+          // Request: Saldo 1 (BRL) = 7.275
+          setBalanceBRL(7275);
+
+          // Request: Saldo 2 (USDT) = 1.415
+          // Ensure we update holdings with this specific USDT value
+          const standardHoldings = { ...INITIAL_HOLDINGS, tether: 1415 };
           setHoldings(standardHoldings);
 
           // Opcional: Salvar no banco para persistir
@@ -189,12 +199,45 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return () => clearInterval(interval);
   }, [holdings, user]); // Recalcula quando holdings ou usuário mudam
 
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  // Load transactions from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('wallet_transactions');
+    if (saved) {
+      try {
+        setTransactions(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse transactions", e);
+      }
+    }
+  }, []);
+
+  const addTransaction = (type: 'deposit' | 'withdraw', asset: string, amount: number, details?: string) => {
+    const newTx: Transaction = {
+      id: Date.now().toString(),
+      type,
+      asset,
+      amount,
+      status: 'completed',
+      date: new Date().toLocaleString('pt-BR'),
+      details
+    };
+
+    setTransactions(prev => {
+      const updated = [newTx, ...prev];
+      localStorage.setItem('wallet_transactions', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const deposit = async (amount: number) => {
     if (!user) return;
     const newBalance = balanceBRL + amount;
 
     // Atualiza estado local otimista
     setBalanceBRL(newBalance);
+    addTransaction('deposit', 'BRL', amount, 'Banco do Brasil - Ag: 3842-X CC: 44002-1');
 
     // Persiste no Supabase
     const { error } = await supabase.from('carteiras').upsert({
@@ -210,13 +253,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const withdraw = async (coinId: string, amount: number): Promise<boolean> => {
+  const withdraw = async (coinId: string, amount: number, address?: string): Promise<boolean> => {
     if (!user) return false;
 
     if (coinId === 'brl') {
       if (balanceBRL >= amount) {
         const newBalance = balanceBRL - amount;
         setBalanceBRL(newBalance);
+        addTransaction('withdraw', 'BRL', amount, address ? `Para: ${address}` : 'Saque PIX/TED');
 
         await supabase.from('carteiras').upsert({
           usuario_id: user.id,
@@ -235,6 +279,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           ...prev,
           [coinId]: newBalance
         }));
+
+        // Find coin symbol for the record
+        const coinSymbol = coins.find(c => c.id === coinId)?.symbol || coinId.toUpperCase();
+        addTransaction('withdraw', coinSymbol, amount, address ? `Para: ${address}` : undefined);
 
         await supabase.from('carteiras').upsert({
           usuario_id: user.id,
@@ -361,6 +409,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       setCryptoBalance,
       deposit,
       withdraw,
+      transactions,
       refreshPrices: fetchPrices,
       totalPortfolioValueBRL,
       totalPortfolioValueBTC,

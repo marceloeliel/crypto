@@ -14,6 +14,8 @@ import { Home } from './pages/Home';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import { Trade } from './pages/Trade';
+import { Transactions } from './pages/Transactions';
+import { TransactionDetails } from './pages/TransactionDetails';
 import { RoutePath } from './types';
 
 const App: React.FC = () => {
@@ -34,6 +36,8 @@ const App: React.FC = () => {
               <Route path={RoutePath.FORGOT_PASSWORD} element={<ForgotPassword />} />
               <Route path={RoutePath.RESET_PASSWORD} element={<ResetPassword />} />
               <Route path={RoutePath.TRADE} element={<Trade />} />
+              <Route path={RoutePath.TRANSACTIONS} element={<Transactions />} />
+              <Route path="/transaction/:id" element={<TransactionDetails />} />
               <Route path={RoutePath.HOME} element={<Home />} />
             </Routes>
           </HashRouter>

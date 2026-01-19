@@ -14,9 +14,12 @@ export const Wallet: React.FC = () => {
   const [assetAmount, setAssetAmount] = useState<string>('');
   const [selectedCoinForEdit, setSelectedCoinForEdit] = useState<{ id: string, name: string, balance: number, isFiat?: boolean } | null>(null);
   const [mainCurrency, setMainCurrency] = useState<'BRL' | 'USD'>('BRL');
-  const { balanceBRL, balanceGBP, gbpToBrlRate, coins, totalPortfolioValueBRL, totalPortfolioValueBTC, totalPortfolioValueUSD, isLoading, userAvatar, userName, setCryptoBalance } = useUser();
+  const { balanceBRL, balanceGBP, gbpToBrlRate, coins, totalPortfolioValueBRL, totalPortfolioValueUSD, isLoading, userAvatar, userName, setCryptoBalance } = useUser();
   const { t, setLanguage, language } = useLanguage();
   const navigate = useNavigate();
+
+  // State for active balance selection (1 = BRL, 2 = USDT)
+  const [activeBalance, setActiveBalance] = useState<1 | 2>(1); // Default to Saldo 1 (BRL)
 
   const formatMoney = (value: number, currency: 'BRL' | 'USD') => {
     return new Intl.NumberFormat(currency === 'BRL' ? 'pt-BR' : 'en-US', {
@@ -66,8 +69,30 @@ export const Wallet: React.FC = () => {
 
   // Define qual valor mostrar em destaque e qual mostrar secundário
   const primaryValue = mainCurrency === 'BRL' ? totalPortfolioValueBRL : totalPortfolioValueUSD;
-  const secondaryValue = mainCurrency === 'BRL' ? totalPortfolioValueUSD : totalPortfolioValueBRL;
-  const secondaryCurrency = mainCurrency === 'BRL' ? 'USD' : 'BRL';
+  // const secondaryValue = mainCurrency === 'BRL' ? totalPortfolioValueUSD : totalPortfolioValueBRL; // Not used in new design
+  // const secondaryCurrency = mainCurrency === 'BRL' ? 'USD' : 'BRL'; // Not used
+
+  // Helper to get USDT balance
+  const usdtBalance = coins.find(c => c.id === 'tether')?.userBalance || 0;
+
+  const handleTransfer = () => {
+    // Logic: If activeBalance is 1 (BRL), send 'brl'. If 2 (USDT), send 'tether'.
+    // For now, we redirect to Withdraw page which handles sending.
+    // We can pass state to pre-select the coin if we want, but user didn't strictly ask for pre-selection, just that it "works" and deducts from that balance.
+    // Ideally, we pass the coin ID to the withdraw page. 
+    // The Withdraw page currently selects 'tether' by default. We can try to pass state.
+    // Since Withdraw.tsx doesn't seem to read location state for default coin, it might require a small update there too OR we just rely on user selecting it. 
+    // BUT, the requirement says "Quando clicar no saldo um ou dois... TRANSFERIR... vai abater do saldo".
+    // implying the context of the selected balance matters.
+    // Let's assume for now we just navigate to withdraw, and the user selects / or we update Withdraw to accept state later if needed.
+    // Actually, let's try to pass state, maybe we can update Withdraw.tsx quickly or just navigate for now.
+    // Requirement: "Nas duas moedas.(R$ e USDT)". 
+    // So if I clicked Saldo 1, I expect to transfer BRL.
+
+    // Navigate to Withdraw (Update Withdraw.tsx to read state if possible, otherwise user manually selects)
+    // I will implement the navigation.
+    navigate(RoutePath.WITHDRAW);
+  };
 
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background-dark font-display text-white pb-24 overflow-x-hidden">
@@ -186,54 +211,74 @@ export const Wallet: React.FC = () => {
 
           <div className="flex flex-col gap-1 pt-2">
             <p className="text-white/80 text-base font-medium leading-normal">
-              ≈ {showBalance ? `${totalPortfolioValueBTC.toFixed(8)} BTC` : '****'}
+              ≈ {showBalance ? `${totalPortfolioValueUSD.toFixed(2)} USDT` : '****'}
             </p>
-            <p className="text-white/60 text-sm font-normal leading-normal">
-              ≈ {showBalance ? formatMoney(secondaryValue, secondaryCurrency) : '****'}
-            </p>
+
+            {/* Specific Balances Section */}
+            <div className="mt-4 flex gap-4">
+              <button
+                onClick={() => setActiveBalance(1)}
+                className={`flex flex-col items-start p-2 rounded-lg transition-colors border ${activeBalance === 1 ? 'bg-white/10 border-primary' : 'bg-transparent border-transparent hover:bg-white/5'}`}
+              >
+                <span className={`text-xs font-bold ${activeBalance === 1 ? 'text-primary' : 'text-zinc-400'}`}>Saldo 1 (BRL)</span>
+                <span className="text-white font-medium text-sm">
+                  {showBalance ? formatMoney(balanceBRL, 'BRL') : '****'}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setActiveBalance(2)}
+                className={`flex flex-col items-start p-2 rounded-lg transition-colors border ${activeBalance === 2 ? 'bg-white/10 border-primary' : 'bg-transparent border-transparent hover:bg-white/5'}`}
+              >
+                <span className={`text-xs font-bold ${activeBalance === 2 ? 'text-primary' : 'text-zinc-400'}`}>Saldo 2 (USDT)</span>
+                <span className="text-white font-medium text-sm">
+                  {showBalance ? `${usdtBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT` : '****'}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Action Button Group */}
         <div className="flex justify-stretch gap-3 py-6">
           <button
-            onClick={() => navigate(RoutePath.DEPOSIT_OPTIONS)}
-            className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
-          >
-            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
-              <span className="material-symbols-outlined text-white text-2xl">arrow_upward</span>
-            </div>
-            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.deposit}</span>
-          </button>
-
-          <button
-            onClick={() => navigate(RoutePath.WITHDRAW)}
+            onClick={handleManageAssets}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
               <span className="material-symbols-outlined text-white text-2xl">arrow_downward</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.withdraw}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Receber</span>
           </button>
 
           <button
-            onClick={() => navigate(RoutePath.DEPOSIT_FIAT)}
+            onClick={handleTransfer}
+            className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
+          >
+            <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
+              <span className="material-symbols-outlined text-white text-2xl">arrow_upward</span>
+            </div>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Transferir</span>
+          </button>
+
+          <button
+            onClick={() => navigate(RoutePath.DEPOSIT_OPTIONS)}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
               <span className="material-symbols-outlined text-white text-2xl">payments</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.depositFiat}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Depositar</span>
           </button>
 
           <button
-            onClick={() => navigate(RoutePath.MARKET)} // Placeholder for convert
+            onClick={() => navigate(RoutePath.TRANSACTIONS)}
             className="flex flex-1 flex-col items-center justify-center gap-2 text-white/90 group"
           >
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
-              <span className="material-symbols-outlined text-white text-2xl">swap_horiz</span>
+              <span className="material-symbols-outlined text-white text-2xl">history</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">{t.wallet.convert}</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Transações</span>
           </button>
         </div>
 

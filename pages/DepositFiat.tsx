@@ -67,19 +67,19 @@ export const DepositFiat: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-sm text-text-secondary">{t.depositFiat.bank}</span>
-                  <span className="font-medium text-white">123 - Banco Fictício S.A.</span>
+                  <span className="font-medium text-white">001 - Banco do Brasil S.A.</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-sm text-text-secondary">{t.depositFiat.agency}</span>
-                  <span className="font-medium text-white">0001</span>
+                  <span className="font-medium text-white">3842-X</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-sm text-text-secondary">{t.depositFiat.account}</span>
-                  <span className="font-medium text-white">123456-7</span>
+                  <span className="font-medium text-white">44002-1</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -91,7 +91,7 @@ export const DepositFiat: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-sm text-text-secondary">{t.depositFiat.pixKey}</span>
-                  <span className="font-medium text-white">12.345.678/0001-99</span>
+                  <span className="font-medium text-white">00.000.000/0001-91</span>
                 </div>
                 <button className="flex items-center gap-2 rounded-full bg-primary/20 px-3 py-1 text-sm font-bold text-primary hover:bg-primary/30 transition-colors">
                   <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>content_copy</span>

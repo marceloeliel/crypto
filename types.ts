@@ -14,6 +14,16 @@ export interface CoinData extends CoinMetadata {
   userBalance: number; // Amount of coins user owns
 }
 
+export interface Transaction {
+  id: string;
+  type: 'deposit' | 'withdraw';
+  asset: string;
+  amount: number;
+  status: 'completed' | 'pending' | 'failed';
+  date: string;
+  details?: string;
+}
+
 export interface UserContextType {
   balanceBRL: number;
   balanceGBP: number;
@@ -26,8 +36,9 @@ export interface UserContextType {
   uploadAvatar: (file: File) => Promise<void>;
   setCryptoBalance: (coinId: string, amount: number) => Promise<void>;
   deposit: (amount: number) => void;
-  withdraw: (coinId: string, amount: number) => Promise<boolean>;
+  withdraw: (coinId: string, amount: number, address?: string) => Promise<boolean>;
   refreshPrices: () => Promise<void>;
+  transactions: Transaction[];
   totalPortfolioValueBRL: number;
   totalPortfolioValueBTC: number;
   totalPortfolioValueUSD: number;
@@ -44,5 +55,6 @@ export enum RoutePath {
   FORGOT_PASSWORD = "/forgot-password",
   RESET_PASSWORD = "/reset-password",
   TRADE = "/trade",
-  HOME = "/home"
+  HOME = "/home",
+  TRANSACTIONS = "/transactions"
 }
