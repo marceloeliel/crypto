@@ -35,7 +35,7 @@ export interface UserContextType {
   updateUserAvatar: (newUrl: string) => void;
   uploadAvatar: (file: File) => Promise<void>;
   setCryptoBalance: (coinId: string, amount: number) => Promise<void>;
-  deposit: (amount: number) => void;
+  deposit: (amount: number, details?: string) => void;
   withdraw: (coinId: string, amount: number, address?: string) => Promise<boolean>;
   refreshPrices: () => Promise<void>;
   transactions: Transaction[];

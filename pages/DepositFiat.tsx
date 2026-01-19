@@ -8,7 +8,25 @@ export const DepositFiat: React.FC = () => {
   const navigate = useNavigate();
   const { deposit } = useUser();
   const { t } = useLanguage();
+  const BRAZIL_BANKS = [
+    { code: '001', name: 'Banco do Brasil' },
+    { code: '237', name: 'Bradesco' },
+    { code: '341', name: 'Itaú Unibanco' },
+    { code: '033', name: 'Santander' },
+    { code: '104', name: 'Caixa Econômica Federal' },
+    { code: '260', name: 'Nubank' },
+    { code: '077', name: 'Banco Inter' },
+    { code: '212', name: 'Banco Original' },
+    { code: '655', name: 'Banco Neon' },
+    { code: '290', name: 'PagBank' },
+    { code: '336', name: 'C6 Bank' },
+    { code: '403', name: 'Cora' },
+  ];
+
   const [inputValue, setInputValue] = useState('1.000,00');
+  const [selectedBank, setSelectedBank] = useState('');
+  const [agency, setAgency] = useState('');
+  const [account, setAccount] = useState('');
 
   const handleDeposit = () => {
     // Basic clean up of currency string to number
@@ -16,14 +34,20 @@ export const DepositFiat: React.FC = () => {
     const amount = parseFloat(cleanValue);
 
     if (!isNaN(amount) && amount > 0) {
-      deposit(amount);
+      let details = 'Depósito via PIX/TED';
+      if (selectedBank) {
+        const bankName = BRAZIL_BANKS.find(b => b.code === selectedBank)?.name || selectedBank;
+        details = `Depósito de: ${bankName}`;
+        if (agency) details += ` | Ag: ${agency}`;
+        if (account) details += ` | CC: ${account}`;
+      }
+
+      deposit(amount, details);
       navigate(RoutePath.WALLET);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Simple mask for BRL currency would go here, 
-    // for now we just allow typing
     setInputValue(e.target.value);
   }
 
@@ -60,7 +84,52 @@ export const DepositFiat: React.FC = () => {
             <p className="mt-2 text-sm text-text-secondary">{t.depositFiat.limits}</p>
           </section>
 
-          {/* Transfer Data Card */}
+          {/* Source Bank Info (Optional) */}
+          <section className="rounded-lg bg-background-card p-4 border border-white/5">
+            <h2 className="mb-4 text-base font-bold text-text-primary">Seus Dados Bancários (Opcional)</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Selecione seu Banco</label>
+                <select
+                  value={selectedBank}
+                  onChange={(e) => setSelectedBank(e.target.value)}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
+                >
+                  <option value="">Selecione...</option>
+                  {BRAZIL_BANKS.map(bank => (
+                    <option key={bank.code} value={bank.code}>{bank.code} - {bank.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {selectedBank && (
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-zinc-400 mb-2">Agência</label>
+                    <input
+                      type="text"
+                      value={agency}
+                      onChange={(e) => setAgency(e.target.value)}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
+                      placeholder="0000"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-zinc-400 mb-2">Conta</label>
+                    <input
+                      type="text"
+                      value={account}
+                      onChange={(e) => setAccount(e.target.value)}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
+                      placeholder="00000-0"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Destination Warning Card */}
           <section className="rounded-lg bg-background-card p-4 border border-white/5">
             <h2 className="mb-4 text-base font-bold text-text-primary">{t.depositFiat.transferData}</h2>
             <div className="space-y-4">

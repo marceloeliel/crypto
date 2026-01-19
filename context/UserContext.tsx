@@ -303,13 +303,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const deposit = async (amount: number) => {
+  const deposit = async (amount: number, details?: string) => {
     if (!user) return;
     const newBalance = balanceBRL + amount;
 
     // Atualiza estado local otimista
     setBalanceBRL(newBalance);
-    addTransaction('deposit', 'BRL', amount, 'Banco do Brasil - Ag: 3842-X CC: 44002-1');
+    addTransaction('deposit', 'BRL', amount, details || 'Banco do Brasil - Ag: 3842-X CC: 44002-1');
 
     // Persiste no Supabase
     const { error } = await supabase.from('carteiras').upsert({
