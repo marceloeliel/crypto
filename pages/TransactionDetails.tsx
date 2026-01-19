@@ -28,14 +28,27 @@ export const TransactionDetails: React.FC = () => {
     const isSuccess = transaction.status === 'completed';
 
     // Helper to extract bank details if available in string format
-    // Expected format: "Banco do Brasil - Ag: 3842-X CC: 44002-1"
-    const bankDetails = isDeposit && transaction.details?.includes('Banco do Brasil') ? {
-        bankName: '001 - Banco do Brasil S.A.',
-        agency: '3842-X',
-        account: '44002-1',
-        accountType: 'Conta Corrente',
-        document: '00.000.000/0001-91' // Mock CNPJ/PIX
-    } : null;
+    // Format saved: "Depósito de: [Bank] | Ag: [Agency] | CC: [Account]"
+    const parseBankDetails = (detailsStr?: string) => {
+        if (!detailsStr) return null;
+
+        // Check if it matches our specific format
+        const depositMatch = detailsStr.match(/Depósito de: (.*?) \| Ag: (.*?) \| CC: (.*)/);
+
+        if (depositMatch) {
+            return {
+                bankName: depositMatch[1],
+                agency: depositMatch[2],
+                account: depositMatch[3],
+                accountType: 'Conta Corrente', // Default since we don't capture this yet
+                document: 'CNPJ do Banco' // Placeholder or we could remove this field if invalid
+            };
+        }
+
+        return null;
+    };
+
+    const bankDetails = isDeposit ? parseBankDetails(transaction.details) : null;
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text);
