@@ -199,36 +199,108 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return () => clearInterval(interval);
   }, [holdings, user]); // Recalcula quando holdings ou usuário mudam
 
+  // --- Transactions Logic (Supabase) ---
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // Load transactions from localStorage on mount
+  // Carregar transações do Supabase ao iniciar (Load transactions from Supabase on start)
   useEffect(() => {
-    const saved = localStorage.getItem('wallet_transactions');
-    if (saved) {
-      try {
-        setTransactions(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse transactions", e);
-      }
+    if (!user) {
+      setTransactions([]);
+      return;
     }
-  }, []);
 
-  const addTransaction = (type: 'deposit' | 'withdraw', asset: string, amount: number, details?: string) => {
-    const newTx: Transaction = {
-      id: Date.now().toString(),
-      type,
-      asset,
-      amount,
-      status: 'completed',
-      date: new Date().toLocaleString('pt-BR'),
-      details
+    const fetchTransactions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('transacoes')
+          .select('*')
+          .eq('usuario_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data) {
+          // Mapear dados do banco para o tipo Transaction do frontend
+          const mappedTransactions: Transaction[] = data.map(tx => ({
+            id: tx.id,
+            type: tx.tipo as 'deposit' | 'withdraw',
+            asset: tx.asset,
+            amount: Number(tx.amount),
+            status: tx.status as 'completed' | 'pending' | 'failed',
+            date: tx.date || new Date(tx.created_at).toLocaleString('pt-BR'),
+            details: tx.details
+          }));
+          setTransactions(mappedTransactions);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar transações:", error);
+      }
     };
 
-    setTransactions(prev => {
-      const updated = [newTx, ...prev];
-      localStorage.setItem('wallet_transactions', JSON.stringify(updated));
-      return updated;
-    });
+    fetchTransactions();
+
+    // Opcional: Inscrever-se para atualizações em tempo real (Realtime subscription)
+    const channel = supabase
+      .channel('transacoes_changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'transacoes', filter: `usuario_id=eq.${user.id}` },
+        (payload) => {
+          const newTx = payload.new;
+          const mappedTx: Transaction = {
+            id: newTx.id,
+            type: newTx.tipo as 'deposit' | 'withdraw',
+            asset: newTx.asset,
+            amount: Number(newTx.amount),
+            status: newTx.status,
+            date: newTx.date || new Date(newTx.created_at).toLocaleString('pt-BR'),
+            details: newTx.details
+          };
+          setTransactions(prev => [mappedTx, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+
+  }, [user]);
+
+  const addTransaction = async (type: 'deposit' | 'withdraw', asset: string, amount: number, details?: string) => {
+    if (!user) return;
+
+    const dateStr = new Date().toLocaleString('pt-BR');
+
+    // Inserir no Supabase (Insert into Supabase)
+    const { data, error } = await supabase
+      .from('transacoes')
+      .insert({
+        usuario_id: user.id,
+        tipo: type,
+        asset: asset,
+        amount: amount,
+        status: 'completed',
+        date: dateStr,
+        details: details
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Erro ao salvar transação:", error);
+      // Fallback simples para UI não quebrar se a tabela não existir ainda
+      const mockTx: Transaction = {
+        id: Date.now().toString(),
+        type,
+        asset,
+        amount,
+        status: 'completed',
+        date: dateStr,
+        details
+      };
+      setTransactions(prev => [mockTx, ...prev]);
+    }
   };
 
   const deposit = async (amount: number) => {
