@@ -129,49 +129,7 @@ export const DepositFiat: React.FC = () => {
             </div>
           </section>
 
-          {/* Destination Warning Card */}
-          <section className="rounded-lg bg-background-card p-4 border border-white/5">
-            <h2 className="mb-4 text-base font-bold text-text-primary">{t.depositFiat.transferData}</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-sm text-text-secondary">{t.depositFiat.bank}</span>
-                  <span className="font-medium text-white">001 - Banco do Brasil S.A.</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-sm text-text-secondary">{t.depositFiat.agency}</span>
-                  <span className="font-medium text-white">3842-X</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-sm text-text-secondary">{t.depositFiat.account}</span>
-                  <span className="font-medium text-white">44002-1</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-sm text-text-secondary">{t.depositFiat.accountType}</span>
-                  <span className="font-medium text-white">Conta Corrente</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-sm text-text-secondary">{t.depositFiat.pixKey}</span>
-                  <span className="font-medium text-white">00.000.000/0001-91</span>
-                </div>
-                <button className="flex items-center gap-2 rounded-full bg-primary/20 px-3 py-1 text-sm font-bold text-primary hover:bg-primary/30 transition-colors">
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>content_copy</span>
-                  <span>{t.depositFiat.copy}</span>
-                </button>
-              </div>
-            </div>
-            <div className="mt-4 rounded-md border border-primary/50 bg-primary/10 p-3">
-              <p className="text-sm font-medium text-primary">{t.depositFiat.transferWarning}</p>
-            </div>
-          </section>
+          {/* Destination Warning Card Removed as per user request */}
 
           {/* Important Notices Card */}
           <section className="rounded-lg bg-background-card p-4 border border-white/5 mb-16">
