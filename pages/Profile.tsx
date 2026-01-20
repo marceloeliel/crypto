@@ -4,13 +4,17 @@ import { useUser } from '../context/UserContext';
 import { useLanguage } from '../context/LanguageContext';
 import { RoutePath } from '../types';
 
+import { useAuth } from '../context/AuthContext';
+
 export const Profile: React.FC = () => {
   const navigate = useNavigate();
   const { userAvatar, uploadAvatar, userName } = useUser();
+  const { signOut } = useAuth();
   const { t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut();
     navigate(RoutePath.LOGIN);
   };
 

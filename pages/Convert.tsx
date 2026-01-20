@@ -5,67 +5,77 @@ import { RoutePath } from '../types';
 
 export const Convert: React.FC = () => {
     const navigate = useNavigate();
-    const { balanceBRL, withdraw, deposit, coins, refreshPrices } = useUser();
+    const { balanceBRL, withdraw, deposit, coins, refreshPrices, setCryptoBalance } = useUser();
 
-    // Default: USDT -> BRL
-    const [fromCoin, setFromCoin] = useState('tether');
-    const [toCoin, setToCoin] = useState('brl');
+    // Default: USDT -> BRL (swap = false), BRL -> USDT (swap = true)
+    const [swap, setSwap] = useState(false);
     const [amountFrom, setAmountFrom] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     // Get USDT Data
     const usdtData = coins.find(c => c.id === 'tether');
-    const usdtBalance = usdtData?.userBalance || 0;
-    const usdtPriceBrl = usdtData?.currentPrice || 5.00; // Fallback
+    const usdtUserBalance = usdtData?.userBalance || 0;
+    const usdtPriceBrl = usdtData?.currentPrice || 5.00;
+
+    // Derived values based on direction
+    const sourceSymbol = swap ? 'BRL' : 'USDT';
+    const targetSymbol = swap ? 'USDT' : 'BRL';
+    const sourceBalance = swap ? balanceBRL : usdtUserBalance;
+    const priceDisplay = swap ? (1 / usdtPriceBrl) : usdtPriceBrl;
 
     useEffect(() => {
         refreshPrices();
     }, []);
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAmountFrom(e.target.value);
+        let value = e.target.value;
+        // Allow digits and one decimal separator (dot or comma)
+        if (!/^\d*[.,]?\d*$/.test(value)) return;
+        setAmountFrom(value);
     };
 
     const getEstimatedAmount = () => {
-        const val = Number(amountFrom);
+        const val = Number(amountFrom.replace(',', '.'));
         if (isNaN(val)) return 0;
-        return val * usdtPriceBrl;
+        return swap ? (val / usdtPriceBrl) : (val * usdtPriceBrl);
+    };
+
+    const handleSwap = () => {
+        setSwap(!swap);
+        setAmountFrom('');
     };
 
     const handleConvert = async () => {
-        const val = Number(amountFrom);
+        const val = Number(amountFrom.replace(',', '.'));
         if (val <= 0) return;
-        if (val > usdtBalance) {
-            alert("Saldo insuficiente em USDT.");
+        if (val > sourceBalance) {
+            alert(`Saldo insuficiente em ${sourceSymbol}.`);
             return;
         }
 
         setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulating processing
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-        // 1. Withdraw (Deduct) USDT
-        // We use 'withdraw' which handles removing from holdings and logging
-        // But for conversion we might want a specific log type. 
-        // For now, let's use withdraw and then deposit manually or create a new context function?
-        // Let's rely on atomic operations in the component for speed, or update Context to have 'convert'.
-        // Since I can't easily change Context interface in one go without potential errors, I'll allow "withdraw" to run.
-
-        // Actually, to ensure atomicity and correct logging, I should ideally add 'convert' to context.
-        // But to save steps, I will chain operations.
-
-        // Step 1: Withdraw USDT
-        const withdrawSuccess = await withdraw('tether', val, `Conversão para BRL`);
-
-        if (withdrawSuccess) {
-            // Step 2: Deposit BRL
-            const brlAmount = getEstimatedAmount();
-            // We use the existing deposit function which adds to BRL and logs 'deposit'.
-            // This might look like two transactions in history (Saque USDT, Deposito BRL), which is actually fine and detailed.
-            deposit(brlAmount);
-
-            navigate(RoutePath.TRANSACTIONS);
+        if (swap) {
+            // BRL -> USDT
+            const withdrawSuccess = await withdraw('brl', val, 'Conversão para USDT');
+            if (withdrawSuccess) {
+                const usdtReceived = val / usdtPriceBrl;
+                await setCryptoBalance('tether', usdtUserBalance + usdtReceived);
+                navigate(RoutePath.TRANSACTIONS);
+            } else {
+                alert("Erro ao realizar conversão (Saque BRL falhou).");
+            }
         } else {
-            alert("Erro ao realizar conversão.");
+            // USDT -> BRL
+            const withdrawSuccess = await withdraw('tether', val, `Conversão para BRL`);
+            if (withdrawSuccess) {
+                const brlAmount = val * usdtPriceBrl;
+                deposit(brlAmount);
+                navigate(RoutePath.TRANSACTIONS);
+            } else {
+                alert("Erro ao realizar conversão (Saque USDT falhou).");
+            }
         }
 
         setIsLoading(false);
@@ -87,48 +97,59 @@ export const Convert: React.FC = () => {
             <main className="flex-1 p-6 space-y-6 max-w-md mx-auto w-full flex flex-col justify-center">
 
                 {/* From Card */}
-                <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800 relative">
+                <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800 relative z-0">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-zinc-400 text-sm font-medium">De</span>
-                        <span className="text-zinc-500 text-xs">Saldo: {usdtBalance.toFixed(2)} USDT</span>
+                        <span className="text-zinc-500 text-xs">Saldo: {swap ? `R$ ${sourceBalance.toFixed(2)}` : `${sourceBalance.toFixed(2)} USDT`}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
-                            <img src={usdtData?.image} alt="USDT" className="w-6 h-6 rounded-full" />
-                            <span className="font-bold">USDT</span>
-                            <span className="material-symbols-outlined text-zinc-500 text-sm">expand_more</span>
+                        <div className="flex items-center gap-2 bg-black/40 px-2 py-1 rounded-lg border border-white/5 shrink-0">
+                            {swap ? (
+                                <div className="w-6 h-6 rounded-full bg-green-700 flex items-center justify-center text-[10px] font-bold">R$</div>
+                            ) : (
+                                <img src={usdtData?.image} alt="USDT" className="w-6 h-6 rounded-full" />
+                            )}
+                            <span className="font-bold">{sourceSymbol}</span>
                         </div>
                         <input
-                            type="number"
+                            type="text"
+                            inputMode="decimal"
                             value={amountFrom}
                             onChange={handleAmountChange}
-                            placeholder="0.00"
-                            className="flex-1 bg-transparent text-right text-2xl font-bold text-white placeholder-zinc-600 focus:outline-none"
+                            placeholder="0,00"
+                            className="flex-1 bg-transparent text-right text-2xl font-bold text-white placeholder-zinc-600 focus:outline-none z-20 relative min-w-0"
                         />
                     </div>
                 </div>
 
-                {/* Arrow */}
+                {/* Swap Button (Arrow) */}
                 <div className="flex justify-center -my-3 z-10 relative">
-                    <div className="bg-zinc-800 p-2 rounded-full border border-zinc-700 shadow-xl">
-                        <span className="material-symbols-outlined text-primary">arrow_downward</span>
-                    </div>
+                    <button
+                        onClick={handleSwap}
+                        className="bg-zinc-800 p-2 rounded-full border border-zinc-700 shadow-xl hover:bg-zinc-700 transition-colors active:scale-95 flex flex-col items-center justify-center gap-0"
+                    >
+                        <span className="material-symbols-outlined text-primary text-sm leading-none">arrow_upward</span>
+                        <span className="material-symbols-outlined text-primary text-sm leading-none">arrow_downward</span>
+                    </button>
                 </div>
 
                 {/* To Card */}
                 <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-zinc-400 text-sm font-medium">Para</span>
-                        <span className="text-zinc-500 text-xs">Saldo: R$ {balanceBRL.toFixed(2)}</span>
+                        <span className="text-zinc-500 text-xs">Saldo: {!swap ? `R$ ${balanceBRL.toFixed(2)}` : `${usdtUserBalance.toFixed(2)} USDT`}</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
-                            <div className="w-6 h-6 rounded-full bg-green-700 flex items-center justify-center text-[10px] font-bold">R$</div>
-                            <span className="font-bold">BRL</span>
-                            <span className="material-symbols-outlined text-zinc-500 text-sm">expand_more</span>
+                            {!swap ? (
+                                <div className="w-6 h-6 rounded-full bg-green-700 flex items-center justify-center text-[10px] font-bold">R$</div>
+                            ) : (
+                                <img src={usdtData?.image} alt="USDT" className="w-6 h-6 rounded-full" />
+                            )}
+                            <span className="font-bold">{targetSymbol}</span>
                         </div>
                         <div className="flex-1 text-right text-2xl font-bold text-white/50">
-                            {getEstimatedAmount().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            {getEstimatedAmount().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
                         </div>
                     </div>
                 </div>
@@ -142,10 +163,10 @@ export const Convert: React.FC = () => {
                 {/* Action Button */}
                 <button
                     onClick={handleConvert}
-                    disabled={Number(amountFrom) <= 0 || isLoading || Number(amountFrom) > usdtBalance}
+                    disabled={Number(amountFrom) <= 0 || isLoading || Number(amountFrom) > sourceBalance}
                     className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-4 shadow-lg shadow-primary/20"
                 >
-                    {isLoading ? 'Convertendo...' : 'Pré-visualizar Conversão'}
+                    {isLoading ? 'Convertendo...' : 'Confirmar Conversão'}
                 </button>
 
             </main>

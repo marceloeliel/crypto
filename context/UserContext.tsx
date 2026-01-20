@@ -183,6 +183,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     if (!user) {
       setTransactions([]);
+      setHoldings(INITIAL_HOLDINGS);
+      setBalanceBRL(0);
       return;
     }
 
@@ -214,7 +216,38 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
     };
 
+    const fetchHoldings = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('carteiras')
+          .select('*')
+          .eq('usuario_id', user.id);
+
+        if (error) throw error;
+
+        if (data) {
+          const newHoldings = { ...INITIAL_HOLDINGS };
+          let brl = 0;
+
+          data.forEach((item: any) => {
+            if (item.moeda === 'brl') {
+              brl = Number(item.saldo);
+            } else {
+              // Ensure key exists or add it
+              newHoldings[item.moeda] = Number(item.saldo);
+            }
+          });
+
+          setBalanceBRL(brl);
+          setHoldings(newHoldings);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar carteiras:", error);
+      }
+    };
+
     fetchTransactions();
+    fetchHoldings();
 
     // Opcional: Inscrever-se para atualizações em tempo real (Realtime subscription)
     const channel = supabase
