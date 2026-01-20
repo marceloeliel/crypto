@@ -85,15 +85,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             }
           });
 
-          // Hack/Demo: Se o usuário não tiver saldo de USDT registrado (conta antiga),
-          // força a exibição do saldo solicitado 1.415.
-          // Hack/Demo: FORCE specific balances
-          newHoldings['tether'] = 1415;
-
-          // Hack/Demo: Force BRL to 7275 if it's 0 (assuming new/demo state) or just enforce it for this request
-          // Hack/Demo: FORCE specific BRL
-          newBalanceBRL = 7275;
-
           setBalanceBRL(newBalanceBRL);
           setBalanceGBP(newBalanceGBP);
           setHoldings(newHoldings);
@@ -102,11 +93,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           console.log("Usuário novo: Inicializando carteira com valores padrão...");
 
           // Request: Saldo 1 (BRL) = 7.275
-          setBalanceBRL(7275);
+          setBalanceBRL(0);
 
           // Request: Saldo 2 (USDT) = 1.415
           // Ensure we update holdings with this specific USDT value
-          const standardHoldings = { ...INITIAL_HOLDINGS, tether: 1415 };
+          const standardHoldings = { ...INITIAL_HOLDINGS };
           setHoldings(standardHoldings);
 
           // Opcional: Salvar no banco para persistir
