@@ -196,7 +196,7 @@ export const Wallet: React.FC = () => {
             </button>
           </div>
 
-          <p className="text-white text-4xl font-bold leading-tight tracking-tighter pt-1 break-words">
+          <p className="text-white text-2xl font-bold leading-tight tracking-tighter pt-1 break-words">
             {showBalance ? formatMoney(primaryValue, mainCurrency) : '********'}
           </p>
 
@@ -239,7 +239,7 @@ export const Wallet: React.FC = () => {
             <div className="flex size-12 items-center justify-center rounded-full bg-zinc-800 group-active:scale-95 transition-all outline outline-1 outline-white/5">
               <span className="material-symbols-outlined text-white text-2xl">arrow_downward</span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Receber</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-300 text-center leading-tight group-hover:text-white transition-colors">Adicionar</span>
           </button>
 
           <button
@@ -453,8 +453,8 @@ export const Wallet: React.FC = () => {
 
       {/* Manage Assets Slide-over / Modal */}
       {showManageAssets && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
-          <div className="w-full max-w-md bg-zinc-900 h-full p-6 flex flex-col animate-in slide-in-from-right duration-300">
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex justify-end">
+          <div className="w-full max-w-md bg-zinc-900 h-[100dvh] p-6 flex flex-col animate-in slide-in-from-right duration-300">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-xl font-bold text-white">{t.wallet.manageAssets}</h2>
               <button

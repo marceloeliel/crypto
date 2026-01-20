@@ -89,25 +89,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           setBalanceGBP(newBalanceGBP);
           setHoldings(newHoldings);
         } else {
-          // Se não tem carteira (novo usuário), inicializa com INITIAL_HOLDINGS
-          console.log("Usuário novo: Inicializando carteira com valores padrão...");
-
-          // Request: Saldo 1 (BRL) = 7.275
+          // Se não tem carteira (novo usuário), não cria nada automaticamente.
+          // O usuário deve adicionar saldo explicitamente.
+          console.log("Usuário novo: Sem carteiras iniciais.");
           setBalanceBRL(0);
-
-          // Request: Saldo 2 (USDT) = 1.415
-          // Ensure we update holdings with this specific USDT value
-          const standardHoldings = { ...INITIAL_HOLDINGS };
-          setHoldings(standardHoldings);
-
-          // Opcional: Salvar no banco para persistir
-          Object.entries(standardHoldings).forEach(async ([coin, amount]) => {
-            await supabase.from('carteiras').insert({
-              usuario_id: user.id,
-              moeda: coin,
-              saldo: amount
-            });
-          });
+          setHoldings({});
         }
 
       } catch (error) {

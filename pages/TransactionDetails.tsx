@@ -8,7 +8,7 @@ export const TransactionDetails: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { t } = useLanguage();
-    const { transactions } = useUser();
+    const { transactions, coins } = useUser();
 
     const transaction = transactions.find(tx => tx.id === id);
 
@@ -77,13 +77,31 @@ export const TransactionDetails: React.FC = () => {
 
                     <div className="flex flex-col gap-1 mb-8">
                         <span className="text-zinc-400 text-sm font-medium">Valor do {isDeposit ? 'Depósito' : 'Saque'}</span>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-zinc-400 text-lg font-bold">R$</span>
-                            <span className="text-4xl font-bold tracking-tighter text-white">
-                                {transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                            </span>
+                        <div className="flex flex-col">
+                            {transaction.asset === 'BRL' ? (
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-zinc-400 text-lg font-bold">R$</span>
+                                    <span className="text-4xl font-bold tracking-tighter text-white">
+                                        {transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    </span>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-4xl font-bold tracking-tighter text-white">
+                                            {transaction.amount.toLocaleString('en-US', { maximumFractionDigits: 8 })}
+                                        </span>
+                                        <span className="text-zinc-400 text-lg font-bold">{transaction.asset}</span>
+                                    </div>
+                                    <p className="text-sm text-zinc-500 font-medium">
+                                        ≈ {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                                            transaction.amount * (coins.find(c => c.symbol === transaction.asset || c.id === transaction.asset.toLowerCase())?.currentPriceUsd || 0)
+                                        )}
+                                    </p>
+                                </>
+                            )}
                         </div>
-                        {isDeposit && <p className="text-xs text-zinc-500 mt-1">Limites: Mínimo R$10,00 / Máximo R$50.000,00</p>}
+                        {isDeposit && transaction.asset === 'BRL' && <p className="text-xs text-zinc-500 mt-1">Limites: Mínimo R$10,00 / Máximo R$50.000,00</p>}
                     </div>
 
                     <div className="w-full h-px bg-zinc-800 mb-6 dashed-border"></div>

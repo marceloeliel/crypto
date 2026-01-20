@@ -28,9 +28,7 @@ export const BottomNav: React.FC = () => {
         <span className="text-xs font-medium">{t.nav.markets}</span>
       </button>
 
-      <button className="w-16 h-16 rounded-full bg-primary flex items-center justify-center -mt-10 shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-        <span className="material-symbols-outlined text-white text-3xl">currency_exchange</span>
-      </button>
+
 
       <button
         onClick={() => navigate(RoutePath.TRADE)}
