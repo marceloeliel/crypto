@@ -249,24 +249,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     fetchTransactions();
     fetchHoldings();
 
-    // Opcional: Inscrever-se para atualizações em tempo real (Realtime subscription)
+    // Realtime Subscription
     const channel = supabase
-      .channel('transacoes_changes')
+      .channel('user-data-updates')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'transacoes', filter: `usuario_id=eq.${user.id}` },
-        (payload) => {
-          const newTx = payload.new;
-          const mappedTx: Transaction = {
-            id: newTx.id,
-            type: newTx.tipo as 'deposit' | 'withdraw',
-            asset: newTx.asset,
-            amount: Number(newTx.amount),
-            status: newTx.status,
-            date: newTx.date || new Date(newTx.created_at).toLocaleString('pt-BR'),
-            details: newTx.details
-          };
-          setTransactions(prev => [mappedTx, ...prev]);
+        { event: '*', schema: 'public', table: 'carteiras', filter: `usuario_id=eq.${user.id}` },
+        () => {
+          console.log('Carteira atualizada via Realtime');
+          fetchHoldings();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'transacoes', filter: `usuario_id=eq.${user.id}` },
+        () => {
+          console.log('Transação detectada via Realtime');
+          fetchTransactions();
+          fetchHoldings(); // Transactions often affect holdings
         }
       )
       .subscribe();
@@ -274,6 +274,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return () => {
       supabase.removeChannel(channel);
     };
+
+
 
   }, [user]);
 
