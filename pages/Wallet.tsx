@@ -118,7 +118,10 @@ export const Wallet: React.FC = () => {
 
         {/* Right Actions */}
         <div className="flex items-center gap-4">
-          <button className="text-zinc-400 hover:text-white transition-colors">
+          <button
+            onClick={() => window.location.reload()}
+            className="text-zinc-400 hover:text-white transition-colors"
+          >
             <span className="material-symbols-outlined text-xl">qr_code_scanner</span>
           </button>
           <button className="text-zinc-400 hover:text-white transition-colors relative">
