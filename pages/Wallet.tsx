@@ -33,7 +33,12 @@ export const Wallet: React.FC = () => {
   };
 
   const toggleMainCurrency = () => {
-    setMainCurrency(prev => prev === 'BRL' ? 'USD' : 'BRL');
+    setMainCurrency(prev => {
+      const newCurrency = prev === 'BRL' ? 'USD' : 'BRL';
+      // Sincronizar activeBalance com a moeda: BRL = Saldo 1, USD = Saldo 2
+      setActiveBalance(newCurrency === 'BRL' ? 1 : 2);
+      return newCurrency;
+    });
   };
 
   const handleManageAssets = () => {
@@ -207,29 +212,6 @@ export const Wallet: React.FC = () => {
             <p className="text-white/80 text-base font-medium leading-normal">
               ≈ {showBalance ? `${totalPortfolioValueUSD.toFixed(2)} USDT` : '****'}
             </p>
-
-            {/* Specific Balances Section */}
-            <div className="mt-4 flex gap-4">
-              <button
-                onClick={() => setActiveBalance(1)}
-                className={`flex flex-col items-start p-2 rounded-lg transition-colors border ${activeBalance === 1 ? 'bg-white/10 border-primary' : 'bg-transparent border-transparent hover:bg-white/5'}`}
-              >
-                <span className={`text-xs font-bold ${activeBalance === 1 ? 'text-primary' : 'text-zinc-400'}`}>Saldo 1 (BRL)</span>
-                <span className="text-white font-medium text-sm">
-                  {showBalance ? formatMoney(balanceBRL, 'BRL') : '****'}
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveBalance(2)}
-                className={`flex flex-col items-start p-2 rounded-lg transition-colors border ${activeBalance === 2 ? 'bg-white/10 border-primary' : 'bg-transparent border-transparent hover:bg-white/5'}`}
-              >
-                <span className={`text-xs font-bold ${activeBalance === 2 ? 'text-primary' : 'text-zinc-400'}`}>Saldo 2 (USDT)</span>
-                <span className="text-white font-medium text-sm">
-                  {showBalance ? `${usdtBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT` : '****'}
-                </span>
-              </button>
-            </div>
           </div>
         </div>
 
