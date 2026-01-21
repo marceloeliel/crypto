@@ -372,34 +372,39 @@ export const Wallet: React.FC = () => {
 
                   {/* Fiat and Stable Assets List */}
                   <div className="border-t border-white/5">
-                    {/* BRL Balance */}
-                    <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
-                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
-                        <img src="brl.png" alt="BRL" className="w-full h-full object-cover" />
+                    {/* BRL Balance - Only show if has balance */}
+                    {balanceBRL > 0 && (
+                      <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
+                          <img src="brl.png" alt="BRL" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-bold text-white">{t.wallet.fiatName}</p>
+                          <p className="text-sm text-white/60">BRL</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-white">{formatMoney(balanceBRL, 'BRL')}</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-white">{t.wallet.fiatName}</p>
-                        <p className="text-sm text-white/60">BRL</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-white">{formatMoney(totalPortfolioValueBRL, 'BRL')}</p>
-                      </div>
-                    </div>
+                    )}
 
-                    {/* GBP Balance */}
-                    <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
-                      <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
-                        <img src="gbp.png" alt="GBP" className="w-full h-full object-cover" />
+
+                    {/* GBP Balance - Only show if has balance */}
+                    {balanceGBP > 0 && (
+                      <div className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors cursor-pointer border-b border-white/5">
+                        <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-8 border border-white/10 overflow-hidden">
+                          <img src="gbp.png" alt="GBP" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-bold text-white">Libra esterlina</p>
+                          <p className="text-sm text-white/60">1 GBP = {formatMoney(gbpToBrlRate, 'BRL')}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-white">{formatMoney(balanceGBP * gbpToBrlRate, 'BRL')}</p>
+                          <p className="text-sm text-white/60">{balanceGBP.toFixed(2)} GBP</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-white">Libra esterlina</p>
-                        <p className="text-sm text-white/60">1 GBP = {formatMoney(gbpToBrlRate, 'BRL')}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-white">{formatMoney(balanceGBP * gbpToBrlRate, 'BRL')}</p>
-                        <p className="text-sm text-white/60">{balanceGBP.toFixed(2)} GBP</p>
-                      </div>
-                    </div>
+                    )}
 
                     {/* Stablecoins */}
                     {stableCoins.map((coin) => (
