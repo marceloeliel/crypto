@@ -10,9 +10,9 @@ export const Market: React.FC = () => {
   const navigate = useNavigate();
 
   const formatMoney = (value: number, curr: 'BRL' | 'USD') => {
-    return new Intl.NumberFormat(curr === 'BRL' ? 'pt-BR' : 'en-US', { 
-        style: 'currency', 
-        currency: curr 
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: curr
     }).format(value);
   };
 
@@ -29,7 +29,7 @@ export const Market: React.FC = () => {
       {/* Top App Bar */}
       <div className="flex items-center p-4 pb-2 justify-between sticky top-0 bg-background-dark z-20">
         <div className="flex size-12 shrink-0 items-center justify-start">
-          <button 
+          <button
             onClick={() => navigate(RoutePath.PROFILE)}
             className="rounded-full p-1 hover:bg-white/10 transition-colors"
           >
@@ -51,9 +51,9 @@ export const Market: React.FC = () => {
             <div className="text-text-gold flex border-none bg-zinc-800 items-center justify-center pl-4 rounded-l-xl border-r-0">
               <span className="material-symbols-outlined">search</span>
             </div>
-            <input 
-              className="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-zinc-800 h-full placeholder:text-text-gold px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" 
-              placeholder="Buscar moedas" 
+            <input
+              className="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-zinc-800 h-full placeholder:text-text-gold px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+              placeholder="Buscar moedas"
             />
           </div>
         </label>
@@ -81,14 +81,14 @@ export const Market: React.FC = () => {
       <div className="flex items-center justify-between text-xs text-text-gold px-4 pt-4 pb-2 font-medium bg-background-dark">
         <span className="w-1/3">Par</span>
         <div className="w-1/3 flex justify-end">
-            <button 
-                onClick={toggleCurrency}
-                className="flex items-center gap-1 hover:text-white transition-colors rounded bg-white/5 px-2 py-1"
-                title="Alternar Moeda"
-            >
-                Preço ({currency})
-                <span className="material-symbols-outlined text-sm">swap_horiz</span>
-            </button>
+          <button
+            onClick={toggleCurrency}
+            className="flex items-center gap-1 hover:text-white transition-colors rounded bg-white/5 px-2 py-1"
+            title="Alternar Moeda"
+          >
+            Preço ({currency})
+            <span className="material-symbols-outlined text-sm">swap_horiz</span>
+          </button>
         </div>
         <span className="w-1/3 text-right">24h %</span>
       </div>
@@ -96,40 +96,40 @@ export const Market: React.FC = () => {
       {/* List Items */}
       <div className="flex flex-col gap-1 px-4 bg-background-dark">
         {isLoading ? (
-            <div className="flex items-center justify-center py-8 text-zinc-500">
-                <span className="material-symbols-outlined animate-spin mr-2">refresh</span> Atualizando mercado...
-            </div>
+          <div className="flex items-center justify-center py-8 text-zinc-500">
+            <span className="material-symbols-outlined animate-spin mr-2">refresh</span> Atualizando mercado...
+          </div>
         ) : (
-            coins.map((coin) => (
+          coins.map((coin) => (
             <div key={coin.id} className="flex items-center gap-4 min-h-[72px] py-2 justify-between border-b border-zinc-800/50 last:border-none cursor-pointer hover:bg-white/5 rounded-lg px-2 -mx-2 transition-colors">
-                <div className="flex items-center gap-4 w-1/3">
+              <div className="flex items-center gap-4 w-1/3">
                 <div className="text-white flex items-center justify-center rounded-full bg-zinc-800 shrink-0 size-10">
-                    {coin.isIconText ? (
+                  {coin.isIconText ? (
                     <p className="font-bold text-primary text-xl">{coin.icon}</p>
-                    ) : (
+                  ) : (
                     <span className="material-symbols-outlined text-primary text-2xl">{coin.icon}</span>
-                    )}
+                  )}
                 </div>
                 <div className="flex flex-col justify-center">
-                    <p className="text-white text-base font-bold leading-normal">{coin.symbol}</p>
-                    <p className="text-text-gold text-sm font-normal leading-normal">{currency}</p>
+                  <p className="text-white text-base font-bold leading-normal">{coin.symbol}</p>
+                  <p className="text-text-gold text-sm font-normal leading-normal">{currency}</p>
                 </div>
-                </div>
-                <div className="flex flex-col justify-center w-1/3 text-right">
+              </div>
+              <div className="flex flex-col justify-center w-1/3 text-right">
                 <p className="text-white text-base font-medium leading-normal">
-                    {formatMoney(currency === 'BRL' ? coin.currentPrice : coin.currentPriceUsd, currency)}
+                  {formatMoney(currency === 'BRL' ? coin.currentPrice : coin.currentPriceUsd, currency)}
                 </p>
-                </div>
-                <div className="w-1/3 text-right flex justify-end">
+              </div>
+              <div className="w-1/3 text-right flex justify-end">
                 <div className={`inline-flex items-center justify-center rounded-lg h-8 px-4 text-sm font-bold leading-normal w-fit min-w-[84px] ${coin.change24h >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-500'}`}>
-                    <span>{formatPercent(coin.change24h)}</span>
+                  <span>{formatPercent(coin.change24h)}</span>
                 </div>
-                </div>
+              </div>
             </div>
-            ))
+          ))
         )}
       </div>
-      
+
       <BottomNav />
     </div>
   );

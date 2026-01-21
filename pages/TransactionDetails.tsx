@@ -89,12 +89,12 @@ export const TransactionDetails: React.FC = () => {
                                 <>
                                     <div className="flex items-baseline gap-2">
                                         <span className="text-4xl font-bold tracking-tighter text-white">
-                                            {transaction.amount.toLocaleString('en-US', { maximumFractionDigits: 8 })}
+                                            {transaction.amount.toLocaleString('pt-BR', { maximumFractionDigits: 8 })}
                                         </span>
                                         <span className="text-zinc-400 text-lg font-bold">{transaction.asset}</span>
                                     </div>
                                     <p className="text-sm text-zinc-500 font-medium">
-                                        ≈ {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                                        ≈ {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'USD' }).format(
                                             transaction.amount * (coins.find(c => c.symbol === transaction.asset || c.id === transaction.asset.toLowerCase())?.currentPriceUsd || 0)
                                         )}
                                     </p>

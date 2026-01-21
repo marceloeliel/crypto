@@ -22,14 +22,14 @@ export const Wallet: React.FC = () => {
   const [activeBalance, setActiveBalance] = useState<1 | 2>(1); // Default to Saldo 1 (BRL)
 
   const formatMoney = (value: number, currency: 'BRL' | 'USD') => {
-    return new Intl.NumberFormat(currency === 'BRL' ? 'pt-BR' : 'en-US', {
+    return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: currency
     }).format(value);
   };
 
   const formatCrypto = (amount: number, symbol: string) => {
-    return `${amount.toLocaleString('en-US', { maximumFractionDigits: 6 })} ${symbol}`;
+    return `${amount.toLocaleString('pt-BR', { maximumFractionDigits: 6 })} ${symbol}`;
   };
 
   const toggleMainCurrency = () => {
