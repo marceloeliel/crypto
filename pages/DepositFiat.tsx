@@ -23,7 +23,7 @@ export const DepositFiat: React.FC = () => {
     { code: '403', name: 'Cora' },
   ];
 
-  const [inputValue, setInputValue] = useState('1.000,00');
+  const [inputValue, setInputValue] = useState('');
   const [selectedBank, setSelectedBank] = useState('');
   const [agency, setAgency] = useState('');
   const [account, setAccount] = useState('');
