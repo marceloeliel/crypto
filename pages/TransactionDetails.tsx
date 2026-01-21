@@ -183,24 +183,62 @@ export const TransactionDetails: React.FC = () => {
                 {/* Bottom Warnings */}
                 <div className="bg-zinc-900 rounded-2xl p-5 border border-zinc-800 space-y-3">
                     <h3 className="font-bold text-white text-sm">Avisos Importantes</h3>
-                    <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">schedule</span>
-                        <p className="text-zinc-400 text-xs leading-relaxed">
-                            Prazo de processamento: PIX (instantâneo), TED (até 2 horas úteis).
-                        </p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">attach_money</span>
-                        <p className="text-zinc-400 text-xs leading-relaxed">
-                            Taxa de depósito: R$ 0,00.
-                        </p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <span className="material-symbols-outlined text-red-500 text-lg mt-0.5">block</span>
-                        <p className="text-zinc-400 text-xs leading-relaxed">
-                            Não deposite de contas de terceiros ou de pessoa jurídica.
-                        </p>
-                    </div>
+
+                    {/* BRL Transactions (PIX/TED) */}
+                    {transaction.asset === 'BRL' && (
+                        <>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">schedule</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    Prazo de processamento: PIX (instantâneo), TED (até 2 horas úteis).
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">attach_money</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    Taxa de {isDeposit ? 'depósito' : 'saque'}: R$ 0,00.
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-red-500 text-lg mt-0.5">block</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    {isDeposit
+                                        ? 'Não deposite de contas de terceiros ou de pessoa jurídica.'
+                                        : 'Saques apenas para contas de sua titularidade (mesmo CPF).'}
+                                </p>
+                            </div>
+                        </>
+                    )}
+
+                    {/* Crypto Transactions */}
+                    {transaction.asset !== 'BRL' && (
+                        <>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">schedule</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    {isDeposit
+                                        ? 'Depósitos em blockchain podem levar de 10 minutos a 1 hora para confirmação.'
+                                        : 'Saques processados em até 30 minutos após confirmação na rede.'}
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-blue-500 text-lg mt-0.5">currency_bitcoin</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    {isDeposit
+                                        ? `Envie apenas ${transaction.asset} para o endereço fornecido. Outros ativos serão perdidos.`
+                                        : `Taxa de rede blockchain: variável conforme congestionamento da rede ${transaction.asset}.`}
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-red-500 text-lg mt-0.5">warning</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">
+                                    {isDeposit
+                                        ? 'Verifique o endereço e a rede antes de enviar. Transações blockchain são irreversíveis.'
+                                        : 'Confira o endereço de destino. Transações em blockchain não podem ser canceladas.'}
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </div>
             </main>
         </div>
